@@ -1,7 +1,7 @@
 <?php
 
-error_reporting(E_ALL & E_NOTICE);
-ini_set('display_errors', 1);
+error_reporting(E_ALL);
+ini_set('display_errors', 'On');
 
 defined('APPLICATION_ENV') || define('APPLICATION_ENV', getenv('APPLICATION_ENV') ?: 'developer');
 defined('APPLICATION_DIR') || define('APPLICATION_DIR', 'app');

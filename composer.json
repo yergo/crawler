@@ -3,9 +3,7 @@
         "bin-dir": "bin/"
     },
 	"require": {
-        "phalcon/incubator": "v1.3.4",
-		"googleads/googleads-php-lib": "dev-master",
-		"google/apiclient": "dev-master"
+        "phalcon/incubator": "v1.3.4"
 	},
 	"require-dev": {
 		"phalcon/devtools": "2.0.1",

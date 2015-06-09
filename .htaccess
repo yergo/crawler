@@ -1,5 +1,6 @@
 <IfModule mod_rewrite.c>
 	RewriteEngine on
+	RewriteBase /crawler
 
 	RewriteCond %{REQUEST_URI} favicon.ico [NC]
 	RewriteCond %{REQUEST_URI} !/img/favicon.ico [NC]
