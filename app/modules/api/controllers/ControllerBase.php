@@ -53,6 +53,16 @@ class ControllerBase extends Controller {
 	 */
 	protected function afterExecuteRoute($dispatcher) {
 
+		// clearing potential warnings
+		$ob = ob_get_clean();
+		if(strlen($ob) > 0) {
+			/**
+			 * @todo some logging of $ob !
+			 */
+			$this->response->setContent($ob);
+			return $this->response->send();
+		}
+		
 		$content = $dispatcher->getReturnedValue();
 
 		if(is_object($content)) {
@@ -78,14 +88,6 @@ class ControllerBase extends Controller {
 				break;
 		}
 		
-		// clearing potential warnings
-		$ob = ob_get_clean();
-		if(strlen($ob) > 0) {
-			/**
-			 * @todo some logging of $ob !
-			 */
-			
-		}
 		
 		// settinf response content as JSON
 		$this->response->setJsonContent($frame);
