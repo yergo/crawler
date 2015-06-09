@@ -15,9 +15,9 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="/">Home</a></li>
-            <li><a href="/api">API</a></li>
-            <li><a href="/contact">Kontakt</a></li>
+            <li class="active"><a href="{{ url() }}">Home</a></li>
+            <li><a href="{{ url('api') }}">API</a></li>
+            <li><a href="{{ url('contact') }}">Kontakt</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>

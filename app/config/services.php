@@ -9,9 +9,9 @@ use Phalcon\Session\Adapter\Files as SessionAdapter;
 /**
  * The URL component is used to generate all kind of urls in the application
  */
-$di['url'] = function () {
+$di['url'] = function () use ($config) {
     $url = new UrlResolver();
-    $url->setBaseUri('/');
+    $url->setBaseUri($config->application->baseUrl ?: '/');
 
     return $url;
 };
