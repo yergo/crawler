@@ -44,6 +44,22 @@ class ControllerBase extends Controller {
 		}
 
 	}
+	
+	public function indexAction()
+	{
+		$this->_response['message'] = 'Available actions';
+		
+		$result = [];
+		$methods = get_class_methods($this);
+		
+		foreach($methods as $method) {
+			if(strpos($method, 'Action') !== false && $method !== 'indexAction') {
+				$result[] = str_replace('Action', '', $method);
+			}
+		}
+		
+		return $result;
+	}
 
 	/**
 	 * Captures method result and tries to make a JSON response out of it.
