@@ -28,6 +28,15 @@ abstract class AdvertisementAbstract
 
 	public $url = false;
 	public $content = false;
+	
+	public $source;
+	public $title;
+	public $adress;
+	public $phone;
+	public $email;
+	public $author;
+	public $area;
+	public $price;
 
 	/**
 	 * Initializes object with content or by gathering content from cache/Internet
@@ -40,7 +49,15 @@ abstract class AdvertisementAbstract
 
 		$this->url = $url;
 		$this->headers = false;
-		$this->content = $content ? : $this->getContent();
+		
+		if(!$content) {
+			$response = $this->getContent($url);
+			
+			$this->headers = $response['headers'];
+			$this->content = $response['content'];
+		} else {
+			$this->content = $content;
+		}
 
 		$this->parse();
 	}
@@ -49,30 +66,37 @@ abstract class AdvertisementAbstract
 	 * Gets content from Cache/Internet
 	 * @return string HTML content of full website
 	 */
-	private function getContent()
+	protected function getContent($url, $context = false)
 	{
 
-		$context = stream_context_create([
+		$context = $context ?: stream_context_create([
 			'http' => [
 				'method' => 'GET',
 				'header' => headers([
 					'Accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
 					'User-Agent' => 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.81 Safari/537.36',
-					'Referer' => 'http://ogloszenia.trojmiasto.pl/nieruchomosci-sprzedam/',
+//					'Referer' => 'http://ogloszenia.trojmiasto.pl/nieruchomosci-sprzedam/',
 					'Accept-Encoding' => 'gzip, deflate, sdch',
 					'Accept-Language' => 'pl-PL,pl;q=0.8,en-US;q=0.6,en;q=0.4',
 				])
 			]
 		]);
 
-		$content = file_get_contents($this->url, false, $context);
+		$content = file_get_contents($url, false, $context);
 		$headers = $http_response_header;
 
+
+		return [
+			'headers' => $headers,
+			'content' => $this->normalize($headers, $content)
+		];
+	}
+	
+	protected function normalize($headers, $content) {
+		
 		if (in_array('Content-Encoding: gzip', $headers)) {
 			$content = gzinflate(substr($content, 10, -8));
 		}
-
-		$this->headers = $headers;
 
 		$enc = mb_detect_encoding($content, ['ISO-8859-2', 'ISO-8859-1', 'latin2', 'auto', 'UTF-8']);
 		
@@ -101,7 +125,7 @@ abstract class AdvertisementAbstract
 		
 		return $content;
 	}
-
+	
 	/**
 	 * Parses content to an fullfill object representation of Advertisement
 	 */

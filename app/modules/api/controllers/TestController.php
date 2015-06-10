@@ -9,7 +9,7 @@ class TestController extends ControllerBase
 	{
 		$this->_response['message'] = 'Trojmiasto action';
 
-		$filename = "http://ogloszenia.trojmiasto.pl/nieruchomosci-sprzedam/dzialka-na-kaszubach-dzialka-budowlana-nowa-karczma-uzbrojona-prad-woda-warunki-zabudowy-ogl10009856.html";
+		$filename = "http://ogloszenia.trojmiasto.pl/nieruchomosci-sprzedam/mieszkanie-gdansk-wrzeszcz-gorny-475000-zl-ogl10010125.html";
 
 		$advertisement = new \Application\Models\Services\Trojmiasto\Advertisement($filename);
 
