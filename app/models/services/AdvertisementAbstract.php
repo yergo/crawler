@@ -3,29 +3,55 @@
 namespace Application\Models\Services;
 
 /**
+ * Quick util to build up headers wrom array for purpose of contexts
+ * @param array $headers
+ * @return string
+ */
+function headers($headers)
+{
+
+	$result = '';
+	foreach ($headers as $key => $value) {
+		$result .= sprintf("%s: %s\r\n", $key, $value);
+	}
+
+	return $result;
+}
+
+/**
  * Description of TrojmiastoAdvertisementInterface
  *
  * @author bnowakowski
  */
-abstract class AdvertisementAbstract {
-	
-	protected $url = false;
-	protected $htmlContent = false;
-	
-//	protected $title;
-	
-	public function __construct($url, $content = false) {
-		
+abstract class AdvertisementAbstract
+{
+
+	public $url = false;
+	public $content = false;
+
+	/**
+	 * Initializes object with content or by gathering content from cache/Internet
+	 * 
+	 * @param string $url
+	 * @param string|false $content
+	 */
+	public function __construct($url, $content = false)
+	{
+
 		$this->url = $url;
 		$this->headers = false;
-		$this->content = $content ?: $this->getContent();
-		
+		$this->content = $content ? : $this->getContent();
+
 		$this->parse();
 	}
-	
-	private function getContent() {
-		
-		$filename = "http://ogloszenia.trojmiasto.pl/nieruchomosci-sprzedam/dzialka-na-kaszubach-dzialka-budowlana-nowa-karczma-uzbrojona-prad-woda-warunki-zabudowy-ogl10009856.html";
+
+	/**
+	 * Gets content from Cache/Internet
+	 * @return string HTML content of full website
+	 */
+	private function getContent()
+	{
+
 		$context = stream_context_create([
 			'http' => [
 				'method' => 'GET',
@@ -38,19 +64,21 @@ abstract class AdvertisementAbstract {
 				])
 			]
 		]);
-		
-		$content = file_get_contents($filename, false, $context);
+
+		$content = file_get_contents($this->url, false, $context);
 		$headers = $http_response_header;
-		
-		if(in_array('Content-Encoding: gzip', $headers)) {
-			$content = gzinflate( substr($content, 10, -8) );
+
+		if (in_array('Content-Encoding: gzip', $headers)) {
+			$content = gzinflate(substr($content, 10, -8));
 		}
-		
+
 		$this->headers = $headers;
-		
+
 		return $content;
 	}
-	
-	private function parse();
-	
+
+	/**
+	 * Parses content to an fullfill object representation of Advertisement
+	 */
+	abstract protected function parse();
 }

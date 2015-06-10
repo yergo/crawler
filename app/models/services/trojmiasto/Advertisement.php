@@ -9,19 +9,21 @@ use \Application\Models\Services\AdvertisementAbstract;
  *
  * @author bnowakowski
  */
-class TrojmiastoAdvertisement extends AdvertisementAbstract {
-	
-	private function parse() {
-		
+class Advertisement extends AdvertisementAbstract
+{
+
+	protected function parse()
+	{
+
+		$content = $this->content;
 		$estimates = null;
 		$success = preg_match_all('/<div class=\"adv\-body\">(.*?)<\/div>\s*<div id=\"footer\">/s', $content, $estimates);
-		
-		if($success) {
-			$this->content = $estimates[1][0];
-		} elseif ($this->content === false) {
+
+		if ($success === 1) {
+			$this->content = (string) $estimates[1][0];
+		} elseif (!$this->content || strlen($this->content) < 10) {
 			throw new \Exception('Empty content on advertisement: ' . $this->url);
 		}
-		
 	}
-	
+
 }
