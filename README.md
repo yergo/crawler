@@ -1,2 +1,2 @@
-# modularized-shared-models
-Simple project scrap to start a Phalcon modularized application with shared models nad servies.
+# Crawler
+An modularized tool to crawl through some websites.
