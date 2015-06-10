@@ -2,14 +2,14 @@
 
 namespace Application\Models\Services\Trojmiasto;
 
-use \Application\Models\Services\AdvertisementInterface;
+use \Application\Models\Services\AdvertisementAbstract;
 
 /**
  * Description of TrojmiastoAdvertisement
  *
  * @author bnowakowski
  */
-class TrojmiastoAdvertisement implements AdvertisementInterface {
+class TrojmiastoAdvertisement extends AdvertisementAbstract {
 	
 	
 	

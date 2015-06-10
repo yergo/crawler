@@ -7,7 +7,7 @@ namespace Application\Models\Services;
  *
  * @author bnowakowski
  */
-interface AdvertisementInterface {
+abstract class AdvertisementAbstract {
 	
 	
 	
