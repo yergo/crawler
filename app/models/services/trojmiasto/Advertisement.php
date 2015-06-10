@@ -14,9 +14,13 @@ class TrojmiastoAdvertisement extends AdvertisementAbstract {
 	private function parse() {
 		
 		$estimates = null;
-		preg_match_all('/<div class=\"adv\-body\">(.*?)<\/div>\s*<div id=\"footer\">/s', $content, $estimates);
+		$success = preg_match_all('/<div class=\"adv\-body\">(.*?)<\/div>\s*<div id=\"footer\">/s', $content, $estimates);
 		
-		$this->content = $estimates[1][0];
+		if($success) {
+			$this->content = $estimates[1][0];
+		} elseif ($this->content === false) {
+			throw new \Exception('Empty content on advertisement: ' . $this->url);
+		}
 		
 	}
 	
