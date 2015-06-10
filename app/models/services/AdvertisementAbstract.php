@@ -74,6 +74,15 @@ abstract class AdvertisementAbstract
 
 		$this->headers = $headers;
 
+		$enc = mb_detect_encoding($content, ['ISO-8859-2', 'ISO-8859-1', 'latin2', 'UTF-8']);
+		if($enc !== 'UTF-8') {
+			if($enc !== false) {
+				$content = iconv($enc, 'UTF-8', $content);
+			} else {
+				throw new Exception('Encoding not detected: ' . $this->url);
+			}
+		}
+		
 		return $content;
 	}
 

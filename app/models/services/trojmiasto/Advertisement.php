@@ -24,6 +24,7 @@ class Advertisement extends AdvertisementAbstract
 		} elseif (!$this->content || strlen($this->content) < 10) {
 			throw new \Exception('Empty content on advertisement: ' . $this->url);
 		}
+		
 	}
 
 }
