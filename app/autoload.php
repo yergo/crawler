@@ -7,6 +7,7 @@ $services = [
 	'router',
 	'database',
 	'dispatcher',
+	'functions',
 ];
 
 foreach($services as $service) {

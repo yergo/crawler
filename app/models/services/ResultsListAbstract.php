@@ -3,26 +3,15 @@
 namespace Application\Models\Services;
 
 /**
- * Description of TrojmiastoAdvertisementInterface
+ * Description of ResultsListAbstract
  *
  * @author bnowakowski
  */
-abstract class AdvertisementAbstract
+abstract class ResultsListAbstract
 {
 
-	public $source;
-	public $source_id;
-	public $title;
-	public $adress;
-	public $phone;
-	public $email;
-	public $author;
-	public $area;
-	public $pricePerArea;
-	public $pricePerMeter;
-	public $rooms;
-	public $url = false;
-	
+	public $urls = [];
+	public $url;
 	protected $headers = false;
 	protected $content = false;
 
@@ -63,7 +52,6 @@ abstract class AdvertisementAbstract
 						'header' => headers([
 							'Accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
 							'User-Agent' => 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.81 Safari/537.36',
-//					'Referer' => 'http://ogloszenia.trojmiasto.pl/nieruchomosci-sprzedam/',
 							'Accept-Encoding' => 'gzip, deflate, sdch',
 							'Accept-Language' => 'pl-PL,pl;q=0.8,en-US;q=0.6,en;q=0.4',
 						])
@@ -81,11 +69,10 @@ abstract class AdvertisementAbstract
 	}
 
 	/**
-	 * Converts to UTF-8 for JSON
-	 * @param array $headers
-	 * @param string $content
-	 * @return string
-	 * @throws Exception
+	 * Initializes object with content or by gathering content from cache/Internet
+	 * 
+	 * @param string $url
+	 * @param string|false $content
 	 */
 	protected function normalize($headers, $content)
 	{

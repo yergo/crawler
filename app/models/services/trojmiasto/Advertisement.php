@@ -86,7 +86,7 @@ class Advertisement extends AdvertisementAbstract
 			$context = stream_context_create([
 				'http' => [
 					'method' => 'POST',
-					'header' => \Application\Models\Services\headers([
+					'header' => headers([
 						'Accept' => '*/*',
 						'User-Agent' => 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.81 Safari/537.36',
 						'Content-Type' => 'application/x-www-form-urlencoded; charset=UTF-8',
