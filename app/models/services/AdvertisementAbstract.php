@@ -26,8 +26,6 @@ function headers($headers)
 abstract class AdvertisementAbstract
 {
 
-	public $url = false;
-	public $content = false;
 	
 	public $source;
 	public $title;
@@ -36,7 +34,12 @@ abstract class AdvertisementAbstract
 	public $email;
 	public $author;
 	public $area;
-	public $price;
+	public $pricePerArea;
+	public $pricePerMeter;
+	public $rooms;
+
+	public $url = false;
+	public $content = false;
 
 	/**
 	 * Initializes object with content or by gathering content from cache/Internet

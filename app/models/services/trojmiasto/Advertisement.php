@@ -34,6 +34,23 @@ class Advertisement extends AdvertisementAbstract
 		preg_match('/dane kontaktowe.*?<strong>(.*?)\s*<[a-z\/]+/si', $this->content, $estimates);
 		$this->author = $estimates[1];
 		
+		preg_match('/Ulica i nr.*?"value">(.*?)\s*<[a-z\/]+/si', $this->content, $estimates);
+		$this->adress = $estimates[1];
+		
+		preg_match('/Liczba pokoi.*?"value">(.*?)\s*<[a-z\/]+/si', $this->content, $estimates);
+		$this->rooms = $estimates[1];
+		
+		preg_match('/Cena:.*?"value">(.*?)\s*<[a-z\/]+/si', $this->content, $estimates);
+		$this->pricePerArea = $estimates[1];
+		
+		preg_match('/Cena za m.*?"value">(.*?)\s*<[a-z\/]+/si', $this->content, $estimates);
+		$this->pricePerMeter = $estimates[1];
+		
+		preg_match('/Powierzchnia.*?"value">(.*?)\s*<[a-z\/]+/si', $this->content, $estimates);
+		$this->area = $estimates[1];
+		
+		
+		
 		$this->contacts($content);
 		
 	}
