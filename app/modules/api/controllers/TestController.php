@@ -2,6 +2,11 @@
 
 namespace Application\Api\Controllers;
 
+/**
+ * Quick util to build up headers wrom array for purpose of contexts
+ * @param array $headers
+ * @return string
+ */
 function headers($headers) {
 	
 	$result = '';
@@ -39,9 +44,10 @@ class TestController extends ControllerBase
 			$content = gzinflate( substr($content, 10, -8) );
 		}
 		
-		preg_match_all('/<div class=\"adv\-body\">(.*?)<\/div>/s', $content, $estimates);
+		preg_match_all('/<div class=\"adv\-body\">(.*?)<\/div>\s*<div id=\"footer\">/s', $content, $estimates);
 		
-		var_dump($estimates);
+		print('<pre>');
+		print($estimates[1][0]);
 		die();
 		
 		return [
