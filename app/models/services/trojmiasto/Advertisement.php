@@ -16,6 +16,7 @@ class Advertisement extends AdvertisementAbstract
 	
 	protected function parse()
 	{
+		$start = microtime(true);
 
 		$content = $this->content;
 		$estimates = null;
@@ -27,6 +28,9 @@ class Advertisement extends AdvertisementAbstract
 			throw new \Exception('Empty content on advertisement: ' . $this->url);
 		}
 		
+		
+		preg_match('/ogl([0-9]+)\.htm/si', $this->url, $estimates);
+		$this->source_id = $estimates[1];
 		
 		preg_match('/<h1>(.*?)\s*<[a-z\/]+/si', $this->content, $estimates);
 		$this->title = $estimates[1];
@@ -52,6 +56,8 @@ class Advertisement extends AdvertisementAbstract
 		
 		
 		$this->contacts($content);
+		
+		$this->timeParsing = microtime(true)-$start;
 		
 	}
 
