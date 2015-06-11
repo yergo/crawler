@@ -86,7 +86,7 @@ class Advertisement extends AdvertisementAbstract
 
 		$this->contacts($content);
 
-		$this->timeParsing = microtime(true) - $start;
+//		$this->timeParsing = microtime(true) - $start;
 	}
 
 	/**
