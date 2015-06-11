@@ -21,6 +21,7 @@ abstract class AdvertisementAbstract
 	public $pricePerArea;
 	public $pricePerMeter;
 	public $rooms;
+	public $middleman = false;
 	public $added;
 	public $updated;
 	public $url = false;

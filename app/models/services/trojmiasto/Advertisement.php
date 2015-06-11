@@ -37,8 +37,8 @@ class Advertisement extends AdvertisementAbstract
 			$this->title = $estimates[1];
 		}
 
-		if (preg_match('/dane kontaktowe.*?<strong>(.*?)\s*<[a-z\/]+/si', $this->content, $estimates) == 1) {
-			$this->author = $estimates[1];
+		if (preg_match('/dane kontaktowe.*?<strong>(.*?)\s*<\/strong/si', $this->content, $estimates) == 1) {
+			$this->author = trim(strip_tags($estimates[1]));
 		}
 
 		if (preg_match('/Ulica i nr.*?"value">(.*?)\s*<[a-z\/]+/si', $this->content, $estimates) == 1) {
@@ -60,12 +60,29 @@ class Advertisement extends AdvertisementAbstract
 		if (preg_match('/Powierzchnia.*?"value">(.*?)\s*<[a-z\/]+/si', $this->content, $estimates) == 1) {
 			$this->area = $estimates[1];
 		}
+		
 		if (preg_match('/ogłoszenie wprowadzono:\s+([0-9\-\s\:]+)\s/si', $this->content, $estimates) == 1) {
 			$this->added = trim($estimates[1]);
 		}
+		
 		if (preg_match('/ostatnia aktualizacja:\s+(?:&nbsp;)*([0-9\-\s\:]+)\s/si', $this->content, $estimates) == 1) {
 			$this->updated = trim($estimates[1]);
 		}
+
+		switch (1) {
+			case preg_match('/pośrednictwo/i', $this->content):
+			case preg_match('/agencja nieruchomości/i', $this->content):
+			case preg_match('/Nr licencji/i', $this->content):
+			case preg_match('/asariWeb/i', $this->content):
+			case preg_match('/prowizja 0%/i', $this->content):
+				$this->middleman = true;
+				break;
+		}
+
+		if (preg_match('/Nie interesują mnie oferty biur nieruchomości/i', $this->content) == 1) {
+			$this->middleman = false;
+		}
+
 
 		$this->contacts($content);
 
