@@ -15,6 +15,9 @@ class TestController extends ControllerBase
 		$advertisements = new \Application\Models\Services\Trojmiasto\ResultsList($filename);
 		
 		$results = [];
+		
+//		var_dump($advertisements);
+		
 		foreach($advertisements->urls as $url) {
 			$advertisement = new \Application\Models\Services\Trojmiasto\Advertisement($url);
 			$results[$url] = $advertisement->toArray();

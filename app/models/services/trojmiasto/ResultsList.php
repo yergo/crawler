@@ -16,11 +16,19 @@ class ResultsList extends ResultsListAbstract
 	{
 		$start = microtime(true);
 		
-		preg_match_all('/<p class="title">\s*<a href="(.*?)"/is', $this->content, $matches);
+		if (preg_match_all('/<p class="title">\s*<a href="(.*?)"/is', $this->content, $matches)) {
+
+			foreach($matches[1] as $url) {
+				preg_match('/ogl([0-9]+)\.htm/si', $url, $estimates);
+				$this->urls[$estimates[1]] = $url;
+			}
+			
+			$this->timeParsing = microtime(true)-$start;
+			return true;
+		}
 		
-		$this->urls = array_merge($this->urls, $matches[1]);
+		return false;
 		
-		$this->timeParsing = microtime(true)-$start;
 	}
 
 }
