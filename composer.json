@@ -1,12 +1,12 @@
 {
-	"config": {
+    "config": {
         "bin-dir": "bin/"
     },
-	"require": {
+    "require": {
         "phalcon/incubator": "v1.3.4"
-	},
-	"require-dev": {
-		"phalcon/devtools": "2.0.1",
-		"phpunit/phpunit": "3.7.*"
-	}
+    },
+    "require-dev": {
+        "phalcon/devtools": "2.0.1",
+        "phpunit/phpunit": "3.7.*"
+    }
 }
