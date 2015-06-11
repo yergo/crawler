@@ -470,6 +470,14 @@ class Advertisement extends \Phalcon\Mvc\Model
     {
         return $this->url;
     }
+	
+	public function beforeValidation() {
+		
+		if(!$this->updated) {
+			$this->updated = $this->added;
+		}
+		
+	}
 
     /**
      * Validations and business logic
