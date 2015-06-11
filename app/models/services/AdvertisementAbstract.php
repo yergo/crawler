@@ -10,10 +10,10 @@ namespace Application\Models\Services;
 abstract class AdvertisementAbstract
 {
 
-	public $source;
+	public $sourceName;
 	public $sourceId;
 	public $title;
-	public $adress;
+	public $address;
 	public $phone;
 	public $email;
 	public $author;
@@ -139,6 +139,27 @@ abstract class AdvertisementAbstract
 		unset($result['content'], $result['headers']);
 
 		return $result;
+	}
+	
+	/**
+	 * 
+	 * @return \Application\Models\Entities\Advertisement
+	 */
+	public function getEntity() {
+		$entity = new \Application\Models\Entities\Advertisement();
+		
+		foreach(get_object_vars($this) as $key => $var) {
+			
+			$method_name = ("set") . ucfirst($key);
+
+			if (method_exists($entity, $method_name)) {
+				$entity->$method_name($var);
+			}
+			
+		}
+		
+		return $entity;
+		
 	}
 
 }

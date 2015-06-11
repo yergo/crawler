@@ -12,6 +12,8 @@ use \Application\Models\Services\ResultsListAbstract;
 class ResultsList extends ResultsListAbstract
 {
 
+	public $source_name = "trojmiasto";
+	
 	protected function parse()
 	{
 		$start = microtime(true);

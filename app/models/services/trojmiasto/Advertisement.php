@@ -12,7 +12,7 @@ use \Application\Models\Services\AdvertisementAbstract;
 class Advertisement extends AdvertisementAbstract
 {
 
-	public $source = "trojmiasto";
+	public $sourceName = "trojmiasto";
 
 	protected function parse()
 	{
@@ -42,23 +42,23 @@ class Advertisement extends AdvertisementAbstract
 		}
 
 		if (preg_match('/Ulica i nr.*?"value">(.*?)\s*<[a-z\/]+/si', $this->content, $estimates) == 1) {
-			$this->adress = $estimates[1];
+			$this->address = $estimates[1];
 		}
 
 		if (preg_match('/Liczba pokoi.*?"value">(.*?)\s*<[a-z\/]+/si', $this->content, $estimates) == 1) {
-			$this->rooms = $estimates[1];
+			$this->rooms = intval($estimates[1]);
 		}
 
 		if (preg_match('/Cena:.*?"value">(.*?)\s*<[a-z\/]+/si', $this->content, $estimates) == 1) {
-			$this->pricePerArea = $estimates[1];
+			$this->pricePerArea = floatval(trim($estimates[1]));
 		}
 
 		if (preg_match('/Cena za m.*?"value">(.*?)\s*<[a-z\/]+/si', $this->content, $estimates) == 1) {
-			$this->pricePerMeter = $estimates[1];
+			$this->pricePerMeter = floatval(trim($estimates[1]));
 		}
 
 		if (preg_match('/Powierzchnia.*?"value">(.*?)\s*<[a-z\/]+/si', $this->content, $estimates) == 1) {
-			$this->area = $estimates[1];
+			$this->area = floatval(trim($estimates[1]));
 		}
 		
 		if (preg_match('/ogłoszenie wprowadzono:\s+([0-9\-\s\:]+)\s/si', $this->content, $estimates) == 1) {

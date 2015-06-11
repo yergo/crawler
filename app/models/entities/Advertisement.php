@@ -267,7 +267,7 @@ class Advertisement extends \Phalcon\Mvc\Model
      */
     public function setMiddleman($middleman)
     {
-        $this->middleman = $middleman;
+        $this->middleman = intval($middleman);
 
         return $this;
     }
@@ -476,18 +476,19 @@ class Advertisement extends \Phalcon\Mvc\Model
      */
     public function validation()
     {
-
-        $this->validate(
-            new Email(
-                array(
-                    'field'    => 'email',
-                    'required' => true,
-                )
-            )
-        );
-        if ($this->validationHasFailed() == true) {
-            return false;
-        }
+		if($this->email !== null) {
+			$this->validate(
+				new Email(
+					array(
+						'field'    => 'email',
+						'required' => true,
+					)
+				)
+			);
+			if ($this->validationHasFailed() == true) {
+				return false;
+			}
+		}
     }
 
     public function getSource()
