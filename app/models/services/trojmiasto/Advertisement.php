@@ -50,15 +50,18 @@ class Advertisement extends AdvertisementAbstract
 		}
 
 		if (preg_match('/Cena:.*?"value">(.*?)\s*<[a-z\/]+/si', $this->content, $estimates) == 1) {
-			$this->pricePerArea = floatval(trim($estimates[1]));
+			$estimate = preg_replace(['/[a-z\s]+/i','/,/'], ['', '.'], $estimates[1]);
+			$this->pricePerArea = floatval($estimate);
 		}
 
 		if (preg_match('/Cena za m.*?"value">(.*?)\s*<[a-z\/]+/si', $this->content, $estimates) == 1) {
-			$this->pricePerMeter = floatval(trim($estimates[1]));
+			$estimate = preg_replace(['/[a-z\s]+/i','/,/'], ['', '.'], $estimates[1]);
+			$this->pricePerMeter = floatval($estimate);
 		}
 
 		if (preg_match('/Powierzchnia.*?"value">(.*?)\s*<[a-z\/]+/si', $this->content, $estimates) == 1) {
-			$this->area = floatval(trim($estimates[1]));
+			$estimate = preg_replace(['/[a-z\s]+/i','/,/'], ['', '.'], $estimates[1]);
+			$this->area = floatval($estimate);
 		}
 		
 		if (preg_match('/ogłoszenie wprowadzono:\s+([0-9\-\s\:]+)\s/si', $this->content, $estimates) == 1) {
