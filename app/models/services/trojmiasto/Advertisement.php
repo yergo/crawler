@@ -30,7 +30,7 @@ class Advertisement extends AdvertisementAbstract
 
 
 		if (preg_match('/ogl([0-9]+)\.htm/si', $this->url, $estimates) == 1) {
-			$this->source_id = $estimates[1];
+			$this->sourceId = $estimates[1];
 		}
 
 		if (preg_match('/<h1>(.*?)\s*<[a-z\/]+/si', $this->content, $estimates) == 1) {

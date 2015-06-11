@@ -11,7 +11,7 @@ abstract class AdvertisementAbstract
 {
 
 	public $source;
-	public $source_id;
+	public $sourceId;
 	public $title;
 	public $adress;
 	public $phone;
