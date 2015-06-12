@@ -9,3 +9,6 @@ app/cache/*
 # composer.lock
 /nbproject/
 composer.lock
+!app/cache/.gitignore
+!app/bin/.gitignore
+!app/vendor/.gitignore
