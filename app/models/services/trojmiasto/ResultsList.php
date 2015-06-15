@@ -25,6 +25,10 @@ class ResultsList extends ResultsListAbstract
 				$this->urls[$estimates[1]] = $url;
 			}
 			
+			if (preg_match_all('/cPage=([0-9]+)/si', $this->content, $matches)) {
+				$this->pages = intval(max($matches[1]));
+			}
+			
 			$this->timeParsing = microtime(true)-$start;
 			return true;
 		}

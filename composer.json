@@ -3,7 +3,8 @@
         "bin-dir": "bin/"
     },
     "require": {
-        "phalcon/incubator": "v1.3.4"
+        "phalcon/incubator": "v1.3.4",
+        "giggsey/libphonenumber-for-php" : "7.*"
     },
     "require-dev": {
         "phalcon/devtools": "2.0.1",

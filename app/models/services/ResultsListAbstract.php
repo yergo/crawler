@@ -13,6 +13,7 @@ abstract class ResultsListAbstract
 	public $urls = [];
 	public $url;
 	public $source_name = "trojmiasto";
+	public $pages = 1;
 
 	protected $headers = false;
 	protected $content = false;
