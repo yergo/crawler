@@ -45,7 +45,7 @@ class Advertisement extends AdvertisementAbstract
 			$this->address = $estimates[1];
 		}
 
-		if (preg_match('/Dzielnica*?"value">(.*?)\s*<\/[a-z]+/si', $this->content, $estimates) == 1) {
+		if (preg_match('/dzielnica.*?"value">(.*?)<\/[a-z]+/si', $this->content, $estimates) == 1) {
 			$this->district = trim(strip_tags($estimates[1]));
 		}
 

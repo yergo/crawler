@@ -28,20 +28,20 @@ class TestController extends ControllerBase
 				$advertisement = new \Application\Models\Services\Trojmiasto\Advertisement($url);
 				$ent = $advertisement->getEntity();
 				
-				if(!$ent->save()) {
-					$error = [
-						'advertisement' => $ent->toArray(),
-						'errors' => []
-					];
-					foreach($ent->getMessages() as $message) {
-						$error['errors'][] = $message->getMessage();
-					}
-					$results['errorneus'][] = $error;
-				}
+//				if(!$ent->save()) {
+//					$error = [
+//						'advertisement' => $ent->toArray(),
+//						'errors' => []
+//					];
+//					foreach($ent->getMessages() as $message) {
+//						$error['errors'][] = $message->getMessage();
+//					}
+//					$results['errorneus'][] = $error;
+//				}
 
 			}
 			
-//			if(++$count > 10) break;
+			if(++$count > 2) break;
 			
 			$results['advertisements'][] = $ent->toArray();
 		}
