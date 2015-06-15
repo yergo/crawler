@@ -10,24 +10,28 @@
             </p>
             
             {% for items in advertisements %}
-                <div class="container btn-default">
+                <div class="container">
                     <h2>{{ items[0]['phone'] }} -  {{ items[0]['author'] }}</h2>
                     {% if items[0]['email'] %}
                         <p class="text-warning">mail: <a href="mailto:{{ items[0]['email'] }}">{{ items[0]['email'] }}</a></p>
                     {% endif %}
+                    
                     {% for item in items %}
-                    <h3>
-                        <a href="{{ item['url'] }}"> {{ item['title'] }} </a>
-                    </h3>
-                        <p>
-                            <b>{{ item['district'] }}, ul. {{ item['address'] }}.</b><br/>
-                            Mieszkanie <b>{{ item['rooms'] }}-pokojowe</b> o powierzchni <b>{{ item['area'] }}m<sup>2</sup></b>.</br>
-                            W cenie <b>{{ item['price_per_area'] }} zł</b> czyli <b>{{ item['price_per_meter'] }} <sup>zł</sup>/<sub>m<sup>2</sup></sub></b>.
-                        </p>
-                        <p class="text-muted">
-                          Dodano {{ item['added'] }}, ostatnio zaktualizowano {{ item['updated'] }}
-                        </p>
+                        <blockquote>
+                            <h3>
+                                <a href="{{ item['url'] }}"> {{ item['title'] }} </a>
+                            </h3>
+                            <p>
+                                <b>{{ item['district'] }}, ul. {{ item['address'] }}.</b><br/>
+                                Mieszkanie <b>{{ item['rooms'] }}-pokojowe</b> o powierzchni <b>{{ item['area'] }}m<sup>2</sup></b>.</br>
+                                W cenie <b>{{ item['price_per_area'] }} zł</b> czyli <b>{{ item['price_per_meter'] }} <sup>zł</sup>/<sub>m<sup>2</sup></sub></b>.
+                            </p>
+                            <footer class="text-muted">
+                              Dodano {{ item['added'] }}, ostatnio zaktualizowano {{ item['updated'] }}
+                            </footer>
+                        </blockquote>
                     {% endfor %}
+                    
                 </div>
                 <hr/>
             {% endfor %}
