@@ -13,6 +13,7 @@ abstract class AdvertisementAbstract
 	public $sourceName;
 	public $sourceId;
 	public $title;
+	public $district;
 	public $address;
 	public $phone;
 	public $email;
@@ -46,6 +47,11 @@ abstract class AdvertisementAbstract
 
 			$this->headers = $response['headers'];
 			$this->content = $response['content'];
+			
+			if(!$this->content) {
+				throw new \Exception('Empty content!');
+			}
+			
 		} else {
 			$this->content = $content;
 		}

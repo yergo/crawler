@@ -35,6 +35,12 @@ class Advertisement extends \Phalcon\Mvc\Model
      *
      * @var string
      */
+    protected $district;
+
+    /**
+     *
+     * @var string
+     */
     protected $address;
 
     /**
@@ -151,6 +157,19 @@ class Advertisement extends \Phalcon\Mvc\Model
     public function setTitle($title)
     {
         $this->title = $title;
+
+        return $this;
+    }
+
+    /**
+     * Method to set the value of field district
+     *
+     * @param string $district
+     * @return $this
+     */
+    public function setDistrict($district)
+    {
+        $this->district = $district;
 
         return $this;
     }
@@ -352,6 +371,16 @@ class Advertisement extends \Phalcon\Mvc\Model
     }
 
     /**
+     * Returns the value of field district
+     *
+     * @return string
+     */
+    public function getDistrict()
+    {
+        return $this->district;
+    }
+
+    /**
      * Returns the value of field address
      *
      * @return string
@@ -517,6 +546,7 @@ class Advertisement extends \Phalcon\Mvc\Model
             'source_name' => 'source_name', 
             'source_id' => 'source_id', 
             'title' => 'title', 
+            'district' => 'district', 
             'address' => 'address', 
             'phone' => 'phone', 
             'email' => 'email', 

@@ -40,9 +40,13 @@ class Advertisement extends AdvertisementAbstract
 		if (preg_match('/dane kontaktowe.*?<strong>(.*?)\s*<\/strong/si', $this->content, $estimates) == 1) {
 			$this->author = trim(strip_tags($estimates[1]));
 		}
-
+		
 		if (preg_match('/Ulica i nr.*?"value">(.*?)\s*<[a-z\/]+/si', $this->content, $estimates) == 1) {
 			$this->address = $estimates[1];
+		}
+
+		if (preg_match('/Dzielnica*?"value">(.*?)\s*<\/[a-z]+/si', $this->content, $estimates) == 1) {
+			$this->district = trim(strip_tags($estimates[1]));
 		}
 
 		if (preg_match('/Liczba pokoi.*?"value">(.*?)\s*<[a-z\/]+/si', $this->content, $estimates) == 1) {

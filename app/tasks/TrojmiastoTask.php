@@ -1,15 +1,19 @@
 <?php
 
+use Application\Models\Entities\Advertisement as AdvEntity;
+
 class TrojmiastoTask extends \Phalcon\CLI\Task
 {
 
 	private static $processes;
+	private $start;
+	public static $threads = 4;
 
 	public function mainAction()
 	{
 
 		// ./console trojmiasto <<< "{test:\"test\"}"
-
+		$this->start = microtime(true);
 
 		$filename = "http://ogloszenia.trojmiasto.pl/nieruchomosci-sprzedam/?formSended=1&formSendedFrom=advSearchLeft&searchFormSended=1&id_kat=101&katlist=1&id_kat_list%5B101%5D=101&cena_min=&cena_max=&rodzaj_nieruchomosci=100&cenam2_min=&cenam2_max=&powierzchnia_min=35&powierzchnia_max=&adres_ulica_i_nr=&districtListWhatSelected=Gda%F1sk+Wrzeszcz+G%F3rny&f1i%5B0%5D=&e1i=139&f1i=&l_pokoi_min=&l_pokoi_max=&pietro_min=&pietro_max=&l_pieter_min=&l_pieter_max=&rok_budowy_min=&rok_budowy_max=&powierzchnia_dzialki_min=&powierzchnia_dzialki_max=&typ_ogrzewania=&slowa_option=all_phrases&slowa=&obList=&data_wprow=all&order=data_wazne_SMS+DESC%2C+data_wprow+DESC&limit=100&id_kat=&limit=100&id_kat=101";
 
@@ -18,8 +22,6 @@ class TrojmiastoTask extends \Phalcon\CLI\Task
 		 */
 		$advertisements = new \Application\Models\Services\Trojmiasto\ResultsList($filename);
 		print('Downloaded...' . PHP_EOL);
-//		$x = 0;
-		
 
 		$processes = [];
 		foreach ($advertisements->urls as $id => $url) {
@@ -32,27 +34,47 @@ class TrojmiastoTask extends \Phalcon\CLI\Task
 
 			$input = json_encode($input);
 
-			$processes[] = $this->proceedContent($input);
-			
-//			if($x++ > 3) {
-//				break;
-//			}
-		}
+			while(count($processes) >= self::$threads) {
+				$this->killProcesses($processes, false);
+				sleep(1);
+			}
 
-		return $this->killProcesses($processes);
+			array_push($processes, $this->proceedContent($input));
+			
+		}
+		
+		$this->killProcesses($processes);
+		
+		print(PHP_EOL . 'Done in ' . (microtime(true)-$this->start) . 's' . PHP_EOL);
 	}
 
 	public function clusterAction()
 	{
-		$json = json_decode(file_get_contents('php://stdin'));
-		print('downloading' . PHP_EOL);
-		sleep(1);
-
-		print('parsed' . PHP_EOL);
-
-//		var_dump($json);
-		print('saved' . PHP_EOL);
+		$params = json_decode(file_get_contents('php://stdin'));
 		
+		$ent = AdvEntity::findFirst('source_name = "' . $params->source_name . '" AND source_id = "' . $params->source_id . '"');
+		
+		if(!$ent) {
+			
+			$done = false;
+			while(!$done) {
+				try {
+					usleep(mt_rand(1000000, 5000000)); // 1000000 == 1s
+					$advertisement = new \Application\Models\Services\Trojmiasto\Advertisement($params->url);
+					$ent = $advertisement->getEntity();
+					
+					$done = true;
+				} catch(\Exception $e) {
+					$done = false;
+					sleep(5);
+				}
+			}
+			
+			if(!$ent->save()) {
+				print('Save failed from from url ' . $params->url . PHP_EOL);
+				var_dump($ent->getMessages());
+			}
+		}
 		exit(0);
 	}
 
@@ -73,7 +95,7 @@ class TrojmiastoTask extends \Phalcon\CLI\Task
 		return $process;
 	}
 
-	private function killProcesses($processes)
+	private function killProcesses(&$processes, $infinite = true)
 	{
 		$killed = 0;
 		
@@ -85,7 +107,7 @@ class TrojmiastoTask extends \Phalcon\CLI\Task
 					proc_close($process);
 					$killed++;
 					$unset[] = $k;
-					print('finished ' . $killed . PHP_EOL);
+					print('.');
 				}
 			}
 			
@@ -94,9 +116,12 @@ class TrojmiastoTask extends \Phalcon\CLI\Task
 			}
 			
 			$processes = array_filter($processes);
+			
+			if(!$infinite) {
+				break;
+			}
 		}
 		
-		print('total count ' . $killed);
 	}
 
 }
