@@ -9,9 +9,9 @@
                 Od nie-pośredników, pogrupowane po numerach telefonicznych, od najstarszej daty aktualizacji rosnąco.
             </p>
             
-            {% for items in advertisements %}
+            {% for phone,items in advertisements %}
                 <div class="container">
-                    <h2>{{ items[0]['phone'] }} -  {{ items[0]['author'] }}</h2>
+                    <h2>{{ phone }} -  {{ items[0]['author'] }}</h2>
                     {% if items[0]['email'] %}
                         <p class="text-warning">mail: <a href="mailto:{{ items[0]['email'] }}">{{ items[0]['email'] }}</a></p>
                     {% endif %}

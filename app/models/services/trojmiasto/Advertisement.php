@@ -139,7 +139,25 @@ class Advertisement extends AdvertisementAbstract
 			if (strpos($contact, '@') !== false) {
 				$this->email = $contact;
 			} else {
-				$this->phone = $contact;
+				$phoneUtil = \libphonenumber\PhoneNumberUtil::getInstance();
+
+				try {
+					$phoneProto = $phoneUtil->parse($contact, 'PL');
+				} catch(\Exception $e) {
+					if(strpos($contact, ',') !== false) {
+						$contact = trim(explode(',', $contact)[0]);
+					} else {
+						print($contact . ' ' . $e->getMessage() . PHP_EOL);
+					}
+					try {
+						$phoneProto = $phoneUtil->parse($contact, 'PL');
+					} catch(\Exception $e) {
+						$this->phone = null;
+						return;
+					}
+				}
+				
+				$this->phone = $phoneUtil->format($phoneProto, \libphonenumber\PhoneNumberFormat::INTERNATIONAL);
 			}
 		}
 	}
