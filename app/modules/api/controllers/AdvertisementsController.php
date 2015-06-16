@@ -103,7 +103,10 @@ class AdvertisementsController extends ControllerBase
 		$ign->setTimeout($date);
 		
 		if($ign->save()) {
-			return ['id' => $this->_request['data']['id']];
+			return [
+				'id' => $this->_request['data']['id'],
+				'till' => $ign->getTimeout()
+			];
 		} else {
 			throw new \Exception($ign->getMessages()->getMessage());
 		}

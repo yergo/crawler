@@ -67,8 +67,8 @@
                                 <p>
                                     <button onclick="similar({{ item['source_id'] }});" type="button" class="btn btn-xs btn-primary">Pokaż podobne</button>
                                     <button onclick="skipped({{ item['source_id'] }});" type="button" class="btn btn-xs btn-info">Oznacz jako pozyskany</button>
-                                    <button onclick="ignored({{ item['source_id'] }}, '1');" type="button" class="btn btn-xs btn-warning" disabled="disabled">Ignoruj przez tydzień</button>
-                                    <button onclick="ignored({{ item['source_id'] }}, '4');" type="button" class="btn btn-xs btn-warning" disabled="disabled">Ignoruj przez miesiąc</button>
+                                    <button onclick="ignored({{ item['source_id'] }}, '1');" type="button" class="btn btn-xs btn-warning">Ignoruj przez tydzień</button>
+                                    <button onclick="ignored({{ item['source_id'] }}, '4');" type="button" class="btn btn-xs btn-warning">Ignoruj przez miesiąc</button>
                                     <button onclick="deleted({{ item['source_id'] }});" type="button" class="btn btn-xs btn-danger">Usuń z bazy</button>
                                 </p>
 
@@ -147,12 +147,11 @@
         $.ajax({
             type: "POST",
             url: "{{ url('api/advertisements/ignored') }}",
-            data: JSON.stringify({id: id}),
+            data: JSON.stringify({id: id, weeks: weeks}),
             dataType: 'json',
             success: function(response) {
                 if(response.status == "success") {
-                    
-                    console.log(response.data);
+                    $('div.advertisement#adv_' + id.toString()).html('<p class="text-danger">Oferta nie będzie się wyświetlać do ' + response.data.till + ' włącznie</p>');
                 }
                 
             }
