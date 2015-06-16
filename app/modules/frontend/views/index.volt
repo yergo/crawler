@@ -11,7 +11,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">
+          <a class="navbar-brand" href="{{ url('') }}">
               <span class="glyphicon"><img src="{{ url('img/spider_white.png') }}" width="26" style="vertical-align: top;" /></span>
               Crawler
           </a>
