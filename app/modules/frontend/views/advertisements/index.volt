@@ -18,13 +18,11 @@
                 </select>
                 
             </div>
+            
             <div class="form-group">
                 
                 <label for="phone">Telefon</label>
                 <input type="text" class="form-control" name="phone" id="district" />
-                
-            </div>
-            <div class="form-group">
                 
             </div>
             
@@ -65,6 +63,15 @@
                               Dodano {{ item['added'] }}, ostatnio zaktualizowano {{ item['updated'] }}
                             </footer>
                         </blockquote>
+                        <button data-source_id="{{ item['source_id'] }}" type="button" class="btn btn-xs btn-primary">Pokaż podobne</button>
+                        <button data-source_id="{{ item['source_id'] }}" type="button" class="btn btn-xs btn-info">Oznacz jako pozyskany</button>
+                        <button data-source_id="{{ item['source_id'] }}" type="button" class="btn btn-xs btn-warning">Ignoruj przez tydzień</button>
+                        <button data-source_id="{{ item['source_id'] }}" type="button" class="btn btn-xs btn-warning">Ignoruj przez miesiąc</button>
+                        <button data-source_id="{{ item['source_id'] }}" type="button" class="btn btn-xs btn-danger">Usuń z bazy</button>
+                        
+                        <div class="hidden" id="additionals_{{ item['source_id'] }}">
+                            
+                        </div>
                     {% endfor %}
                     
                 </div>
