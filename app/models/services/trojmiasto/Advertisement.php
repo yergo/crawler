@@ -136,6 +136,8 @@ class Advertisement extends AdvertisementAbstract
 			]);
 
 			$contact = $this->getContent($url, $context)['content'];
+			$contact = explode(',', $contact)[0];
+			
 			if (strpos($contact, '@') !== false) {
 				$this->email = $contact;
 			} else {
@@ -144,17 +146,8 @@ class Advertisement extends AdvertisementAbstract
 				try {
 					$phoneProto = $phoneUtil->parse($contact, 'PL');
 				} catch(\Exception $e) {
-					if(strpos($contact, ',') !== false) {
-						$contact = trim(explode(',', $contact)[0]);
-					} else {
-						print($contact . ' ' . $e->getMessage() . PHP_EOL);
-					}
-					try {
-						$phoneProto = $phoneUtil->parse($contact, 'PL');
-					} catch(\Exception $e) {
-						$this->phone = null;
-						return;
-					}
+					$this->phone = null;
+					return;
 				}
 				
 				$this->phone = $phoneUtil->format($phoneProto, \libphonenumber\PhoneNumberFormat::INTERNATIONAL);

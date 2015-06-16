@@ -109,6 +109,12 @@ class Advertisement extends \Phalcon\Mvc\Model
      */
     protected $url;
 
+	/**
+     *
+     * @var string
+     */
+    protected $show_after;
+
     /**
      * Method to set the value of field id
      *
@@ -331,6 +337,19 @@ class Advertisement extends \Phalcon\Mvc\Model
     }
 
     /**
+     * Method to set the value of field url
+     *
+     * @param string $url
+     * @return $this
+     */
+    public function seShowAfter($show_after)
+    {
+        $this->show_after = $show_after;
+
+        return $this;
+    }
+
+    /**
      * Returns the value of field id
      *
      * @return integer
@@ -500,12 +519,26 @@ class Advertisement extends \Phalcon\Mvc\Model
         return $this->url;
     }
 	
+    /**
+     * Returns the value of field url
+     *
+     * @return string
+     */
+    public function getShowAfter()
+    {
+        return $this->show_after;
+    }
+	
 	public function beforeValidation() {
 		
 		if(!$this->updated) {
 			$this->updated = $this->added;
 		}
 		
+	}
+	
+	public function initialize() {
+		$this->skipAttributesOnCreate(['show_after']);
 	}
 
     /**
@@ -558,7 +591,8 @@ class Advertisement extends \Phalcon\Mvc\Model
             'middleman' => 'middleman', 
             'added' => 'added', 
             'updated' => 'updated', 
-            'url' => 'url'
+            'url' => 'url',
+            'show_after' => 'show_after'
         );
     }
 

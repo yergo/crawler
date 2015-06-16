@@ -14,8 +14,7 @@ class TrojmiastoTask extends \Phalcon\CLI\Task
 
 		$this->start = microtime(true);
 
-		$filename = "http://ogloszenia.trojmiasto.pl/nieruchomosci-sprzedam/?formSended=1&formSendedFrom=advSearchLeft&searchFormSended=1&id_kat=101&katlist=1&id_kat_list%5B101%5D=101&cena_min=&cena_max=&rodzaj_nieruchomosci=100&cenam2_min=&cenam2_max=&powierzchnia_min=&powierzchnia_max=&adres_ulica_i_nr=&districtListWhatSelected=wybranych%3A+17&f1i%5B0%5D=&e1i=81%7C70%7C58%7C69%7C79%7C3%7C68%7C32%7C1%7C87%7C86%7C119%7C2%7C140%7C139%7C7%7C31&f1i=&l_pokoi_min=2&l_pokoi_max=&pietro_min=&pietro_max=&l_pieter_min=&l_pieter_max=&rok_budowy_min=&rok_budowy_max=&powierzchnia_dzialki_min=&powierzchnia_dzialki_max=&typ_ogrzewania=&slowa_option=all_phrases&slowa=&obList=&data_wprow=all&order=data_wazne_SMS+DESC%2C+data_wprow+DESC&limit=100&id_kat=&limit=100&id_kat=101";
-		$filename = "http://ogloszenia.trojmiasto.pl/nieruchomosci-sprzedam/?searchFormSended=1&id_kat=101&katlist=1&id_kat_list%5B101%5D=101&cena_min=&cena_max=&rodzaj_nieruchomosci=100&cenam2_min=&cenam2_max=&powierzchnia_min=&powierzchnia_max=&adres_ulica_i_nr=&districtListWhatSelected=wybranych%3A+17&f1i=&e1i=81%7C70%7C58%7C69%7C79%7C3%7C68%7C32%7C1%7C87%7C86%7C119%7C2%7C140%7C139%7C7%7C31&l_pokoi_min=2&l_pokoi_max=&pietro_min=&pietro_max=&l_pieter_min=&l_pieter_max=&rok_budowy_min=&rok_budowy_max=&powierzchnia_dzialki_min=&powierzchnia_dzialki_max=&typ_ogrzewania=&slowa_option=all_phrases&slowa=&obList=&data_wprow=all&order=data_wazne_SMS+DESC%2C+data_wprow+DESC&limit=100&limit=20";
+		$filename = "http://ogloszenia.trojmiasto.pl/nieruchomosci-sprzedam/?searchFormSended=1&id_kat=101&katlist=1&id_kat_list%5B101%5D=101&cena_min=&cena_max=&rodzaj_nieruchomosci=100&cenam2_min=&cenam2_max=&powierzchnia_min=&powierzchnia_max=&adres_ulica_i_nr=&districtListWhatSelected=wybranych%3A+17&f1i=&e1i=81%7C70%7C58%7C69%7C79%7C3%7C68%7C32%7C1%7C87%7C86%7C119%7C2%7C140%7C139%7C7%7C31&l_pokoi_min=2&l_pokoi_max=&pietro_min=&pietro_max=&l_pieter_min=&l_pieter_max=&rok_budowy_min=&rok_budowy_max=&powierzchnia_dzialki_min=&powierzchnia_dzialki_max=&typ_ogrzewania=&slowa_option=all_phrases&slowa=&obList=&data_wprow=all&order=data_wazne_SMS+DESC%2C+data_wprow+DESC&limit=100&limit=100";
 		$fileStartName = $filename;
 		$page = 0;
 		$pages = 0;
@@ -28,9 +27,23 @@ class TrojmiastoTask extends \Phalcon\CLI\Task
 			print('Downloaded...' . PHP_EOL);
 			
 			$pages = $advertisements->pages;
-
+			
+			$existent = AdvEntity::find([
+				'columns' => 'source_id',
+				'conditions' => 'source_name = "' . $advertisements->source_name . '" AND source_id IN(' . join(',', array_keys($advertisements->urls)) . ')'
+			])->toArray();
+			
+			$ids = [];
+			foreach($existent as $values) {
+				$ids[] = $values['source_id'];
+			}
+			
 			$processes = [];
 			foreach ($advertisements->urls as $id => $url) {
+				
+				if(in_array($id, $ids)) {
+					continue;
+				}
 
 				$input = [
 					'source_name' => $advertisements->source_name,
@@ -64,7 +77,7 @@ class TrojmiastoTask extends \Phalcon\CLI\Task
 	{
 		$params = json_decode(file_get_contents('php://stdin'));
 		
-		$ent = false; AdvEntity::findFirst('source_name = "' . $params->source_name . '" AND source_id = "' . $params->source_id . '"');
+		$ent = false; // AdvEntity::findFirst('source_name = "' . $params->source_name . '" AND source_id = "' . $params->source_id . '"');
 		
 		if(!$ent) {
 			
