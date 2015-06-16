@@ -3,6 +3,7 @@
 namespace Application\Api\Controllers;
 
 use Application\Models\Entities\Advertisement as TAdvertisement;
+use Application\Models\Entities\AdvertisementIgnore as TIgnored;
 
 /**
  * Description of AdvertisementsController
@@ -16,26 +17,26 @@ class AdvertisementsController extends ControllerBase
 		
 		// /crawler/api/advertisements/search?json={"where":{"middleman":false},"limit":10,"group":"phone"}
 		
-		$conditions = [];
-		$binds = [];
-		
-		foreach($this->_request['data']['where'] as $key => $value) {
-			$conditions[] = sprintf('%s = :%s:', $key, $key);
-			$binds[$key] = $value;
-		}
-		
-		$advertisements = TAdvertisement::find([
-			'conditions' => join(', ', $conditions),
-			'bind' => $binds,
-			'limit' => isset($this->_request['data']['limit']) ? intval($this->_request['data']['limit']) : 10,
-			'group' => isset($this->_request['data']['group']) ? join(',', (array) $this->_request['data']['group']) : null,
-			'order' => 'updated DESC'
-		]);
-		
-		return[
-			'count' => $advertisements->count(),
-			'items' => $advertisements->toArray(),
-		];
+//		$conditions = [];
+//		$binds = [];
+//		
+//		foreach($this->_request['data']['where'] as $key => $value) {
+//			$conditions[] = sprintf('%s = :%s:', $key, $key);
+//			$binds[$key] = $value;
+//		}
+//		
+//		$advertisements = TAdvertisement::find([
+//			'conditions' => join(', ', $conditions),
+//			'bind' => $binds,
+//			'limit' => isset($this->_request['data']['limit']) ? intval($this->_request['data']['limit']) : 10,
+//			'group' => isset($this->_request['data']['group']) ? join(',', (array) $this->_request['data']['group']) : null,
+//			'order' => 'updated DESC'
+//		]);
+//		
+//		return[
+//			'count' => $advertisements->count(),
+//			'items' => $advertisements->toArray(),
+//		];
 	}
 	
 	public function similarAction() {
@@ -94,7 +95,20 @@ class AdvertisementsController extends ControllerBase
 	
 	public function ignoredAction() {
 		
-		var_dump($this->_request);die();
+		$advBase = TAdvertisement::findFirst('source_id = "' . $this->_request['data']['id'] . '"');
+		$date = date('Y-m-d', strtotime(sprintf('+%d weeks', $this->_request['data']['weeks'])));
+		
+		$ign = new TIgnored();
+		$ign->setAdvertisementId($advBase->getId());
+		$ign->setTimeout($date);
+		
+		if($ign->save()) {
+			return ['id' => $this->_request['data']['id']];
+		} else {
+			throw new \Exception($ign->getMessages()->getMessage());
+		}
+		
+		return $this->_request;
 	}
 	
 }

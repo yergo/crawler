@@ -13,29 +13,21 @@ use Application\Models\Entities\Advertisement as TAdvertisement;
 class AdvertisementsController extends ControllerBase
 {
 	
-	private static $districts = [
-		'Aniołki' => ['Aniołki', 'Focha'],
-		'Jelitkowo' => ['Jelitkowo', 'Jelitkowski Dwór'],
-		'Morena' => ['Morena'],
-		'Oliwa' => ['Oliwa']
-	];
-
 	/**
 	 * Produces result list
 	 */
 	public function indexAction()
 	{
-		$default = [
-			'middleman' => 0,
-			'district' => 'Wrzeszcz Górny',
-			'timeout' => null,
-			'order' => 'updated ASC',
-		];
+		$builder = $this->modelsManager->createBuilder()
+			->addFrom('\Application\Models\Entities\Advertisement', 'A')
+			->leftJoin('\Application\Models\Entities\AdvertisementIgnore', 'A.id = I.advertisement_id', 'I')
+			->where('A.middleman = 0')
+			->andWhere('A.skipped = 0')
+			->andWhere('I.id IS NULL OR I.timeout < NOW()')
+			->orderBy('A.updated ASC')
+		;
 		
-		$advertisements = TAdvertisement::find([
-			'conditions' => 'middleman = 0 AND skipped = 0',
-			'order' => 'updated ASC'
-		]);
+		$advertisements = $builder->getQuery()->execute();
 		
 		$result = [];
 		
@@ -44,7 +36,6 @@ class AdvertisementsController extends ControllerBase
 		}
 		
 		$this->view->advertisements = $result;
-		
 		
 	}
 

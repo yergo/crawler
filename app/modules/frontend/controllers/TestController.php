@@ -3,6 +3,7 @@
 namespace Application\Frontend\Controllers;
 
 use Application\Models\Entities\Advertisement as TAdvertisement;
+use Application\Models\Entities\AdvertisementIgnore as TIgnores;
 
 /**
  * Description of TestController
@@ -12,12 +13,22 @@ use Application\Models\Entities\Advertisement as TAdvertisement;
 class TestController extends ControllerBase
 {
 	
-	public function indexAction() {
+	/**
+	 * Produces result list
+	 */
+	public function indexAction()
+	{
 		
-		$advertisements = TAdvertisement::find([
-			'conditions' => 'middleman = 0',
-			'order' => 'updated ASC'
-		]);
+		$builder = $this->modelsManager->createBuilder()
+			->addFrom('\Application\Models\Entities\Advertisement', 'A')
+			->leftJoin('\Application\Models\Entities\AdvertisementIgnore', 'A.id = I.advertisement_id', 'I')
+			->where('A.middleman = 0')
+			->andWhere('A.skipped = 0')
+			->andWhere('I.id IS NULL OR I.timeout < NOW()')
+			->orderBy('A.updated ASC')
+		;
+		
+		$advertisements = $builder->getQuery()->execute();
 		
 		$result = [];
 		
@@ -26,6 +37,7 @@ class TestController extends ControllerBase
 		}
 		
 		$this->view->advertisements = $result;
+		
 		
 	}
 	
