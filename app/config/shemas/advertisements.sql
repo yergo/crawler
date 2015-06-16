@@ -38,7 +38,6 @@ CREATE TABLE IF NOT EXISTS `advertisement` (
   `added` datetime NOT NULL,
   `updated` datetime DEFAULT NULL,
   `url` varchar(255) COLLATE utf8_polish_ci NOT NULL,
-  `show_after` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniqie_source_id_pair` (`source_name`,`source_id`),
@@ -49,7 +48,6 @@ CREATE TABLE IF NOT EXISTS `advertisement` (
   KEY `rooms` (`rooms`),
   KEY `middleman` (`middleman`),
   KEY `district` (`district`),
-  KEY `show_after` (`show_after`),
   KEY `updated` (`updated`),
   KEY `added` (`added`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci AUTO_INCREMENT=1 ;
