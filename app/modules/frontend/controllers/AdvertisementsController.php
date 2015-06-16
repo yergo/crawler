@@ -33,7 +33,7 @@ class AdvertisementsController extends ControllerBase
 		];
 		
 		$advertisements = TAdvertisement::find([
-			'conditions' => 'middleman = 0',
+			'conditions' => 'middleman = 0 AND skipped = 0',
 			'order' => 'updated ASC'
 		]);
 		
@@ -45,22 +45,6 @@ class AdvertisementsController extends ControllerBase
 		
 		$this->view->advertisements = $result;
 		
-		
-	}
-
-	/**
-	 * Finds possibly the same advertisements from middlepeople.
-	 */
-	public function commonAction()
-	{
-		
-	}
-	
-	/**
-	 * Sets advertisement for some time to ignore
-	 */
-	public function ignoreAction()
-	{
 		
 	}
 

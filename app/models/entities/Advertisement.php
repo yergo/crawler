@@ -110,6 +110,12 @@ class Advertisement extends \Phalcon\Mvc\Model
     protected $url;
 
     /**
+     *
+     * @var int
+     */
+    protected $skipped;
+
+    /**
      * Method to set the value of field id
      *
      * @param integer $id
@@ -330,6 +336,13 @@ class Advertisement extends \Phalcon\Mvc\Model
         return $this;
     }
 
+    public function setSkipped($skipped)
+    {
+        $this->skipped = $skipped;
+
+        return $this;
+    }
+
     /**
      * Returns the value of field id
      *
@@ -500,6 +513,11 @@ class Advertisement extends \Phalcon\Mvc\Model
         return $this->url;
     }
 	
+    public function getskipped()
+    {
+        return $this->skipped;
+    }
+	
 	public function beforeValidation() {
 		
 		if(!$this->updated) {
@@ -509,7 +527,7 @@ class Advertisement extends \Phalcon\Mvc\Model
 	}
 	
 	public function initialize() {
-		
+		$this->skipAttributesOnCreate(['skipped']);
 	}
 
     /**
@@ -563,6 +581,7 @@ class Advertisement extends \Phalcon\Mvc\Model
             'added' => 'added', 
             'updated' => 'updated', 
             'url' => 'url',
+            'skipped' => 'skipped',
         );
     }
 
