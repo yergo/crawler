@@ -11,7 +11,10 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">Project name</a>
+          <a class="navbar-brand" href="#">
+              <span class="glyphicon"><img src="{{ url('img/spider_white.png') }}" width="26" style="vertical-align: top;" /></span>
+              Crawler
+          </a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
