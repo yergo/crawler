@@ -13,32 +13,6 @@ use Application\Models\Entities\AdvertisementIgnore as TIgnored;
 class AdvertisementsController extends ControllerBase
 {
 
-	public function searchAction() {
-		
-		// /crawler/api/advertisements/search?json={"where":{"middleman":false},"limit":10,"group":"phone"}
-		
-//		$conditions = [];
-//		$binds = [];
-//		
-//		foreach($this->_request['data']['where'] as $key => $value) {
-//			$conditions[] = sprintf('%s = :%s:', $key, $key);
-//			$binds[$key] = $value;
-//		}
-//		
-//		$advertisements = TAdvertisement::find([
-//			'conditions' => join(', ', $conditions),
-//			'bind' => $binds,
-//			'limit' => isset($this->_request['data']['limit']) ? intval($this->_request['data']['limit']) : 10,
-//			'group' => isset($this->_request['data']['group']) ? join(',', (array) $this->_request['data']['group']) : null,
-//			'order' => 'updated DESC'
-//		]);
-//		
-//		return[
-//			'count' => $advertisements->count(),
-//			'items' => $advertisements->toArray(),
-//		];
-	}
-	
 	public function similarAction() {
 		
 		$advBase = TAdvertisement::findFirst('source_id = "' . $this->_request['data']['id'] . '"');
@@ -76,6 +50,12 @@ class AdvertisementsController extends ControllerBase
 	public function deletedAction() {
 		
 		$advBase = TAdvertisement::findFirst('source_id = "' . $this->_request['data']['id'] . '"');
+		
+		// already deleted, surpress error
+		if(!$advBase) {
+			return ['id' => $this->_request['data']['id']];
+		}
+		
 		if($advBase->delete()) {
 			return ['id' => $this->_request['data']['id']];
 		} else {
@@ -86,6 +66,7 @@ class AdvertisementsController extends ControllerBase
 	public function skippedAction() {
 		$advBase = TAdvertisement::findFirst('source_id = "' . $this->_request['data']['id'] . '"');
 		$advBase->setSkipped(1);
+		
 		if($advBase->update()) {
 			return ['id' => $this->_request['data']['id']];
 		} else {
