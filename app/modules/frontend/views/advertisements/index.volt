@@ -63,11 +63,12 @@
                               Dodano {{ item['added'] }}, ostatnio zaktualizowano {{ item['updated'] }}
                             </footer>
                         </blockquote>
-                        <button data-source_id="{{ item['source_id'] }}" type="button" class="btn btn-xs btn-primary">Pokaż podobne</button>
-                        <button data-source_id="{{ item['source_id'] }}" type="button" class="btn btn-xs btn-info">Oznacz jako pozyskany</button>
-                        <button data-source_id="{{ item['source_id'] }}" type="button" class="btn btn-xs btn-warning">Ignoruj przez tydzień</button>
-                        <button data-source_id="{{ item['source_id'] }}" type="button" class="btn btn-xs btn-warning">Ignoruj przez miesiąc</button>
-                        <button data-source_id="{{ item['source_id'] }}" type="button" class="btn btn-xs btn-danger">Usuń z bazy</button>
+                        
+                        <button onclick="similar({{ item['source_id'] }});" type="button" class="btn btn-xs btn-primary">Pokaż podobne</button>
+                        <button onclick="skipped({{ item['source_id'] }});" type="button" class="btn btn-xs btn-info">Oznacz jako pozyskany</button>
+                        <button onclick="ignored({{ item['source_id'] }}, '1');" type="button" class="btn btn-xs btn-warning">Ignoruj przez tydzień</button>
+                        <button onclick="ignored({{ item['source_id'] }}, '4');" type="button" class="btn btn-xs btn-warning">Ignoruj przez miesiąc</button>
+                        <button onclick="deleted({{ item['source_id'] }});" type="button" class="btn btn-xs btn-danger">Usuń z bazy</button>
                         
                         <div class="hidden" id="additionals_{{ item['source_id'] }}">
                             
@@ -87,11 +88,23 @@
             
 <script type="text/javascript">
     
-    function ignore(var period) {
-        
-        console.log('Ignore for ' + period);
+    function similar(var id) {
         
     }
+    
+    function skipped(var id) {
+        
+    }
+    
+    function ignored(var id, var weeks) {
+        
+    }
+    
+    function deleted(var id) {
+        
+    }
+    
+    
     
 </script>
 
