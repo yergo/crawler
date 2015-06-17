@@ -40,49 +40,53 @@
 
     <div class="row">
         
-        <div class="col-md-9" role="main">
+        <div class="col-md-12" role="main">
             
             {% for phone,items in advertisements %}
-                <div class="container">
-                    <h2>
-                        {{ phone }} -  {{ items[0]['author'] }}
-                    </h2>
-                    {% if items[0]['email'] %}
-                        <p class="text-warning">mail: <a href="mailto:{{ items[0]['email'] }}">{{ items[0]['email'] }}</a></p>
-                    {% endif %}
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <b>{{ phone }} -  {{ items[0]['author'] }}</b>
+                        {% if items[0]['email'] %}
+                            <p class="text-warning">mail: <a href="mailto:{{ items[0]['email'] }}">{{ items[0]['email'] }}</a></p>
+                        {% endif %}
+                    </div>
                     
                     {% for item in items %}
-                        <div class="advertisement" id="adv_{{ item['source_id'] }}">
-                            <blockquote>
-                                <h3>
-                                    <img src="{{ url('img/' ~ item['source_name'] ~ '.ico') }}" />
-                                    <a href="{{ item['url'] }}"> {{ item['title'] }} </a>
-                                </h3>
-                                <p>
-                                    <b>{{ item['district'] }}, ul. {{ item['address'] }}.</b><br/>
-                                    Mieszkanie <b>{{ item['rooms'] }}-pokojowe</b> o powierzchni <b>{{ item['area'] }}m<sup>2</sup></b>.</br>
-                                    W cenie <b>{{ item['price_per_area'] }} zł</b> czyli <b>{{ item['price_per_meter'] }} <sup>zł</sup>/<sub>m<sup>2</sup></sub></b>.
-                                </p>
-                                <footer class="text-muted">
-                                  Dodano {{ item['added'] }}, ostatnio zaktualizowano {{ item['updated'] }}
-                                </footer>
-
-                                <p>
-                                    <button onclick="similar({{ item['source_id'] }});" type="button" class="btn btn-xs btn-primary">Pokaż podobne</button>
-                                    <button onclick="skipped({{ item['source_id'] }});" type="button" class="btn btn-xs btn-info">Oznacz jako pozyskany</button>
-                                    <button onclick="ignored({{ item['source_id'] }}, '1');" type="button" class="btn btn-xs btn-warning">Ignoruj przez tydzień</button>
-                                    <button onclick="ignored({{ item['source_id'] }}, '4');" type="button" class="btn btn-xs btn-warning">Ignoruj przez miesiąc</button>
-                                    <button onclick="deleted({{ item['source_id'] }});" type="button" class="btn btn-xs btn-danger">Usuń z bazy</button>
-                                </p>
-
-                                <div class="hidden" id="additionals_{{ item['source_id'] }}">
-                                    <div class="progress">
-                                        <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+                        <div class="advertisement panel-body" id="adv_{{ item['source_id'] }}">
+                            <h4>
+                                <div class="media">
+                                    <div class="media-left media-middle">
+                                        <img src="{{ url('img/' ~ item['source_name'] ~ '.ico') }}" />
+                                    </div>
+                                    <div class="media-body">
+                                <a href="{{ item['url'] }}"> {{ item['title'] }} </a>
                                     </div>
                                 </div>
-                            
-                            </blockquote>
+                            </h4>
+                            <p>
+                                <b>{{ item['district'] }}, ul. {{ item['address'] }}.</b><br/>
+                                Mieszkanie <b>{{ item['rooms'] }}-pokojowe</b> o powierzchni <b>{{ item['area'] }}m<sup>2</sup></b>.</br>
+                                W cenie <b>{{ item['price_per_area'] }} zł</b> czyli <b>{{ item['price_per_meter'] }} <sup>zł</sup>/<sub>m<sup>2</sup></sub></b>.
+                            </p>
+                            <footer class="text-muted">
+                              Dodano {{ item['added'] }}, ostatnio zaktualizowano {{ item['updated'] }}
+                            </footer>
+
+                            <p>
+                                <button onclick="similar({{ item['source_id'] }});" type="button" class="btn btn-xs btn-primary">Pokaż podobne</button>
+                                <button onclick="skipped({{ item['source_id'] }});" type="button" class="btn btn-xs btn-info">Oznacz jako pozyskany</button>
+                                <button onclick="ignored({{ item['source_id'] }}, '1');" type="button" class="btn btn-xs btn-warning">Ignoruj przez tydzień</button>
+                                <button onclick="ignored({{ item['source_id'] }}, '4');" type="button" class="btn btn-xs btn-warning">Ignoruj przez miesiąc</button>
+                                <button onclick="deleted({{ item['source_id'] }});" type="button" class="btn btn-xs btn-danger">Usuń z bazy</button>
+                            </p>
                         </div>
+
+                        <ul class="list-group hidden" id="additionals_{{ item['source_id'] }}">
+                            <div class="progress">
+                                <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+                            </div>
+                        </ul>
+                            
                     {% endfor %}
                     
                 </div>
@@ -99,7 +103,7 @@
 <script type="text/javascript">
     
     function similar(id) {
-        elem = $('div#additionals_' + id.toString());
+        elem = $('ul#additionals_' + id.toString());
         elem.toggleClass('hidden');
         
         $.ajax({
@@ -111,14 +115,14 @@
                 if(response.status == "success") {
                     items = response.data.items;
                     
-                    var html = '<p class="text-warning">nie znaleziono</p>'
+                    var html = '<li class="list-group-item text-warning">nie znaleziono</li>'
                     if(items.length > 0) {
                     
-                        html = '<p><ul class="list-unordered">';
+                        html = '';
                         for(i in items) {
-                            html += '<li><a href="' + items[i].url + '">' + items[i].title + '</a> <b>' + items[i].rooms + '-pokojowe</b> pod adresem <b>' + items[i].address + '</b> w cenie <b>' + items[i].price_per_area + 'zł</b> - ' + (items[i].middleman == 1 ? 'od biura' : 'prywatna') + '</li>'
+                            html += '<li class="list-group-item"><a href="' + items[i].url + '">' + items[i].title + '</a> <b>' + items[i].rooms + '-pokojowe</b> pod adresem <b>' + items[i].address + '</b> w cenie <b>' + items[i].price_per_area + 'zł</b> - ' + (items[i].middleman == 1 ? 'od biura' : 'prywatna') + '</li>'
                         }
-                        html + "</ul></p>"
+                        html + "";
                     }
                     
                     elem.html(html);
