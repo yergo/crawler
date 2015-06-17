@@ -47,7 +47,8 @@
                     <div class="panel-heading">
                         <b>{{ phone }} -  {{ items[0]['author'] }}</b>
                         {% if items[0]['email'] %}
-                            <p class="text-warning">mail: <a href="mailto:{{ items[0]['email'] }}">{{ items[0]['email'] }}</a></p>
+                            <br/>
+                            <span class="text-warning">mail: <a href="mailto:{{ items[0]['email'] }}">{{ items[0]['email'] }}</a></span>
                         {% endif %}
                     </div>
                     
@@ -59,7 +60,7 @@
                                         <img src="{{ url('img/' ~ item['source_name'] ~ '.ico') }}" />
                                     </div>
                                     <div class="media-body">
-                                <a href="{{ item['url'] }}"> {{ item['title'] }} </a>
+                                        <a href="{{ item['url'] }}"> {{ item['title'] }} </a>
                                     </div>
                                 </div>
                             </h4>
