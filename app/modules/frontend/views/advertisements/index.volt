@@ -78,7 +78,7 @@
                                 </div>
                             </h4>
                             <p>
-                                <b>{{ item['district'] }}, ul. {{ item['address'] }}.</b><br/>
+                                <b>{{ item['district'] }}{% if item['address'] %}, ul. {{ item['address'] }}{% endif %}.</b><br/>
                                 Mieszkanie <b>{{ item['rooms'] }}-pokojowe</b> o powierzchni <b>{{ item['area'] }}m<sup>2</sup></b>.</br>
                                 W cenie <b>{{ item['price_per_area'] }} zł</b> czyli <b>{{ item['price_per_meter'] }} <sup>zł</sup>/<sub>m<sup>2</sup></sub></b>.
                             </p>
