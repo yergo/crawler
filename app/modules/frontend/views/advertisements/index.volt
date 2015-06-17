@@ -44,7 +44,9 @@
             
             {% for phone,items in advertisements %}
                 <div class="container">
-                    <h2>{{ phone }} -  {{ items[0]['author'] }}</h2>
+                    <h2>
+                        {{ phone }} -  {{ items[0]['author'] }}
+                    </h2>
                     {% if items[0]['email'] %}
                         <p class="text-warning">mail: <a href="mailto:{{ items[0]['email'] }}">{{ items[0]['email'] }}</a></p>
                     {% endif %}
@@ -53,6 +55,7 @@
                         <div class="advertisement" id="adv_{{ item['source_id'] }}">
                             <blockquote>
                                 <h3>
+                                    <img src="{{ url('img/' ~ item['source_name'] ~ '.ico') }}" />
                                     <a href="{{ item['url'] }}"> {{ item['title'] }} </a>
                                 </h3>
                                 <p>
