@@ -68,9 +68,10 @@
                                 Mieszkanie <b>{{ item['rooms'] }}-pokojowe</b> o powierzchni <b>{{ item['area'] }}m<sup>2</sup></b>.</br>
                                 W cenie <b>{{ item['price_per_area'] }} zł</b> czyli <b>{{ item['price_per_meter'] }} <sup>zł</sup>/<sub>m<sup>2</sup></sub></b>.
                             </p>
-                            <footer class="text-muted">
+                            <p class="text-muted">
+                              <span class="glyphicon glyphicon-triangle-right"></span>
                               Dodano {{ item['added'] }}, ostatnio zaktualizowano {{ item['updated'] }}
-                            </footer>
+                            </p>
 
                             <p>
                                 <button onclick="similar({{ item['source_id'] }});" type="button" class="btn btn-xs btn-primary">Pokaż podobne</button>
