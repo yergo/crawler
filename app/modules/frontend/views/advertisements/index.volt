@@ -142,7 +142,7 @@
             dataType: 'json',
             success: function(response) {
                 if(response.status == "success") {
-                    $('div.advertisement#adv_' + id.toString()).html('<p class="text-danger">Oferta nie będzie więcej wyświetlana.</p>');
+                    $('div.advertisement#adv_' + id.toString()).html('<p class="alert alert-danger">Oferta nie będzie więcej wyświetlana.</p>');
                 }
             }
         });
@@ -158,7 +158,7 @@
             dataType: 'json',
             success: function(response) {
                 if(response.status == "success") {
-                    $('div.advertisement#adv_' + id.toString()).html('<p class="text-danger">Oferta nie będzie się wyświetlać do ' + response.data.till + ' włącznie</p>');
+                    $('div.advertisement#adv_' + id.toString()).html('<p class="alert alert-warning">Oferta nie będzie się wyświetlać do ' + response.data.till + ' włącznie</p>');
                 }
                 
             }
@@ -175,7 +175,7 @@
             dataType: 'json',
             success: function(response) {
                 if(response.status == "success") {
-                    $('div.advertisement#adv_' + id.toString()).html('<p class="text-danger">Oferta zostanie zaktualizowana przy następnym ściąganiu.</p>');
+                    $('div.advertisement#adv_' + id.toString()).html('<p class="alert alert-info">Oferta zostanie zaktualizowana przy następnym ściąganiu.</p>');
                 }
                 
             }
