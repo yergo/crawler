@@ -6,9 +6,9 @@
         Od nie-pośredników, pogrupowane po numerach telefonicznych, od najstarszej daty aktualizacji rosnąco.
     </p>
 
-    <div class="row col-md-12">
+    <div class="row">
         
-        <form action="{{ url('advertisements') }}" method="POST" class="form-inline">
+        <form action="{{ url('advertisements') }}" method="POST" class="form-inline col-md-12">
             
             <div class="form-group">
                 
@@ -36,7 +36,7 @@
         
         
     </div>
-            
+    <br/>
 
     <div class="row">
         
