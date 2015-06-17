@@ -1,6 +1,6 @@
 <?php
 
-namespace Application\Models\Services\Trojmiasto;
+namespace Application\Models\Services\Olx;
 
 use \Application\Models\Services\ResultsListAbstract;
 
@@ -12,7 +12,7 @@ use \Application\Models\Services\ResultsListAbstract;
 class ResultsList extends ResultsListAbstract
 {
 
-	public $source_name = "trojmiasto";
+	public $source_name = "olx";
 	
 	protected function parse()
 	{
@@ -37,6 +37,7 @@ class ResultsList extends ResultsListAbstract
 		
 	}
 	
+		
 	protected function get_context() {
 		
 		return stream_context_create([
@@ -52,5 +53,4 @@ class ResultsList extends ResultsListAbstract
 		]);
 		
 	}
-
 }

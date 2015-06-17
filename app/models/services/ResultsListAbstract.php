@@ -24,14 +24,14 @@ abstract class ResultsListAbstract
 	 * @param string $url
 	 * @param string|false $content
 	 */
-	public function __construct($url, $content = false)
+	public function __construct($url, $content = false, $context = false)
 	{
 
 		$this->url = $url;
 		$this->headers = false;
 
 		if (!$content) {
-			$response = $this->getContent($url);
+			$response = $this->getContent($url, $context);
 
 			$this->headers = $response['headers'];
 			$this->content = $response['content'];
@@ -49,17 +49,7 @@ abstract class ResultsListAbstract
 	protected function getContent($url, $context = false)
 	{
 
-		$context = $context ? : stream_context_create([
-					'http' => [
-						'method' => 'GET',
-						'header' => headers([
-							'Accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-							'User-Agent' => 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.81 Safari/537.36',
-							'Accept-Encoding' => 'gzip, deflate, sdch',
-							'Accept-Language' => 'pl-PL,pl;q=0.8,en-US;q=0.6,en;q=0.4',
-						])
-					]
-		]);
+		$context = $context ? : $this->get_context();
 
 		$content = file_get_contents($url, false, $context);
 		$headers = $http_response_header;
@@ -115,6 +105,11 @@ abstract class ResultsListAbstract
 	 * Parses content to an fullfill object representation of Advertisement
 	 */
 	abstract protected function parse();
+	
+	/**
+	 * Creates stream context for HTTP requests.
+	 */
+	abstract protected function get_context();
 
 	/**
 	 * Exports object to array

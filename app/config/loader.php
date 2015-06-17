@@ -15,6 +15,7 @@ $loader->registerNamespaces(
 		'Application\\Models\\Entities' => APPLICATION_PATH . $config->application->modelsDir . 'entities/',
 		'Application\\Models\\Services' => APPLICATION_PATH . $config->application->modelsDir . 'services/',
 		'Application\\Models\\Services\\Trojmiasto' => APPLICATION_PATH . $config->application->modelsDir . 'services/trojmiasto',
+		'Application\\Models\\Services\\Olx' => APPLICATION_PATH . $config->application->modelsDir . 'services/olx',
 	), true
 );
 
