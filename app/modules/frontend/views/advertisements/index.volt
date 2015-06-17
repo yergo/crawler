@@ -8,8 +8,8 @@
 
     <div class="row">
         
-        <form action="{{ url('advertisements') }}" method="POST" class="form-inline col-md-12">
-            
+        <form action="{{ url('advertisements') }}" method="GET" class="form-inline col-md-12">
+{#            
             <div class="form-group">
                 
                 <label for="district">Dzielnica</label>
@@ -25,13 +25,26 @@
                 <input type="text" class="form-control" name="phone" id="district" />
                 
             </div>
-            
+#}
+{#
             <div class="checkbox">
                 <label>
                     <input type="checkbox" name="with-ignored"> Wraz z ignorowanymi
                 </label>
             </div>
-            <button type="submit" class="btn btn-default">Submit</button>
+#}
+
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" name="with-olx" {% if options['with-olx'] %} checked="checked"{% endif %}> Z Olx
+                </label>
+            </div>
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" name="with-trojmiasto" {% if options['with-trojmiasto'] %} checked="checked"{% endif %}> Z Trojmiasto
+                </label>
+            </div>
+            <button type="submit" class="btn btn-xs btn-default">Submit</button>
         </form>
         
         
@@ -53,11 +66,11 @@
                     </div>
                     
                     {% for item in items %}
-                        <div class="advertisement panel-body" id="adv_{{ item['source_id'] }}">
+                        <div class="advertisement panel-body" id="adv_{{ item['id'] }}">
                             <h4>
                                 <div class="media">
                                     <div class="media-left media-middle">
-                                        <img src="{{ url('img/' ~ item['source_name'] ~ '.ico') }}" />
+                                        <img src="{{ url('img/' ~ item['source_name'] ~ '.ico') }}" width="16" height="16" />
                                     </div>
                                     <div class="media-body">
                                         <a href="{{ item['url'] }}"> {{ item['title'] }} </a>
@@ -75,15 +88,15 @@
                             </p>
 
                             <p>
-                                <button onclick="similar({{ item['source_id'] }});" type="button" class="btn btn-xs btn-primary">Pokaż podobne</button>
-                                <button onclick="skipped({{ item['source_id'] }});" type="button" class="btn btn-xs btn-info">Oznacz jako pozyskany</button>
-                                <button onclick="ignored({{ item['source_id'] }}, '1');" type="button" class="btn btn-xs btn-warning">Ignoruj przez tydzień</button>
-                                <button onclick="ignored({{ item['source_id'] }}, '4');" type="button" class="btn btn-xs btn-warning">Ignoruj przez miesiąc</button>
-                                <button onclick="deleted({{ item['source_id'] }});" type="button" class="btn btn-xs btn-danger">Usuń z bazy</button>
+                                <button onclick="similar('{{ item['id'] }}');" type="button" class="btn btn-xs btn-primary">Pokaż podobne</button>
+                                <button onclick="skipped('{{ item['id'] }}');" type="button" class="btn btn-xs btn-info">Oznacz jako pozyskany</button>
+                                <button onclick="ignored('{{ item['id'] }}', '1');" type="button" class="btn btn-xs btn-warning">Ignoruj przez tydzień</button>
+                                <button onclick="ignored('{{ item['id'] }}', '4');" type="button" class="btn btn-xs btn-warning">Ignoruj przez miesiąc</button>
+                                <button onclick="deleted('{{ item['id'] }}');" type="button" class="btn btn-xs btn-danger">Usuń z bazy</button>
                             </p>
                         </div>
 
-                        <ul class="list-group hidden" id="additionals_{{ item['source_id'] }}">
+                        <ul class="list-group hidden" id="additionals_{{ item['id'] }}">
                             <div class="progress">
                                 <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
                             </div>

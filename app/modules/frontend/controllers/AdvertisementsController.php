@@ -18,14 +18,39 @@ class AdvertisementsController extends ControllerBase
 	 */
 	public function indexAction()
 	{
+
+		$options = [
+			'with-ignored' => false,
+			'with-trojmiasto' => false,
+			'with-olx' => false,
+		];
+
+		foreach($this->request->getQuery() as $key => $value) {	
+			if(array_key_exists($key, $options) && $value == 'on') {
+				$options[$key] = true;
+			}
+		}
+		
 		$builder = $this->modelsManager->createBuilder()
 			->addFrom('\Application\Models\Entities\Advertisement', 'A')
-			->leftJoin('\Application\Models\Entities\AdvertisementIgnore', 'A.id = I.advertisement_id', 'I')
-			->where('A.middleman = 0')
+			->where('A.middleman = 0');
+		
+		if(!$options['with-ignored']) {
+			$builder->leftJoin('\Application\Models\Entities\AdvertisementIgnore', 'A.id = I.advertisement_id', 'I')
 			->andWhere('A.skipped = 0')
-			->andWhere('I.id IS NULL OR I.timeout < NOW()')
-			->orderBy('A.updated ASC')
-		;
+			->andWhere('I.id IS NULL OR I.timeout < NOW()');
+		}
+		
+		$sources = [];
+		if($options['with-olx']) {
+			$sources[] = 'olx';
+		}
+		if($options['with-trojmiasto']) {
+			$sources[] = 'trojmiasto';
+		}
+		$builder->andWhere('A.source_name IN("' . join('","', $sources) . '")');
+		
+		$builder->orderBy('A.updated ASC');
 		
 		$advertisements = $builder->getQuery()->execute();
 		
@@ -36,6 +61,7 @@ class AdvertisementsController extends ControllerBase
 		}
 		
 		$this->view->advertisements = $result;
+		$this->view->options = $options;
 		
 	}
 

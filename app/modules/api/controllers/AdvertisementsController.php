@@ -15,7 +15,7 @@ class AdvertisementsController extends ControllerBase
 
 	public function similarAction() {
 		
-		$advBase = TAdvertisement::findFirst('source_id = "' . $this->_request['data']['id'] . '"');
+		$advBase = TAdvertisement::findFirst($this->_request['data']['id']);
 		
 		$priceBase = intval($advBase->getPricePerArea());
 		$percentBase = $priceBase*0.1; // 10%
@@ -49,7 +49,7 @@ class AdvertisementsController extends ControllerBase
 	
 	public function deletedAction() {
 		
-		$advBase = TAdvertisement::findFirst('source_id = "' . $this->_request['data']['id'] . '"');
+		$advBase = TAdvertisement::findFirst($this->_request['data']['id']);
 		
 		// already deleted, surpress error
 		if(!$advBase) {
@@ -64,7 +64,7 @@ class AdvertisementsController extends ControllerBase
 	}
 	
 	public function skippedAction() {
-		$advBase = TAdvertisement::findFirst('source_id = "' . $this->_request['data']['id'] . '"');
+		$advBase = TAdvertisement::findFirst($this->_request['data']['id']);
 		$advBase->setSkipped(1);
 		
 		if($advBase->update()) {
@@ -76,7 +76,7 @@ class AdvertisementsController extends ControllerBase
 	
 	public function ignoredAction() {
 		
-		$advBase = TAdvertisement::findFirst('source_id = "' . $this->_request['data']['id'] . '"');
+		$advBase = TAdvertisement::findFirst($this->_request['data']['id']);
 		$date = date('Y-m-d', strtotime(sprintf('+%d weeks', $this->_request['data']['weeks'])));
 		
 		$ign = new TIgnored();

@@ -21,7 +21,7 @@ class ResultsList extends ResultsListAbstract
 		if (preg_match_all('/<a href="([a-z0-9\-\.:\/]+)#[a-z0-9]+"/is', $this->content, $matches)) {
 
 			foreach($matches[1] as $url) {
-				preg_match('/CID3\-([A-Z0-9]+)\.htm/si', $url, $estimates);
+				preg_match('/CID3\-ID([A-Z0-9]+)\.htm/si', $url, $estimates);
 				$this->urls[$estimates[1]] = $url;
 			}
 			
@@ -45,7 +45,8 @@ class ResultsList extends ResultsListAbstract
 		
 	protected function get_context() {
 		
-		$content = 'view=&min_id=&q=&search%5Bcity_id%5D=5659&search%5Bregion_id%5D=5&search%5Bdistrict_id%5D=0&search%5Bdist%5D=5&search%5Bfilter_enum_market%5D%5B%5D=secondary&search%5Bfilter_enum_rooms%5D%5B%5D=two&search%5Bfilter_enum_rooms%5D%5B%5D=three&search%5Bfilter_enum_rooms%5D%5B%5D=four&search%5Bcategory_id%5D=14';
+//		$content = 'view=&min_id=&q=&search%5Bcity_id%5D=5659&search%5Bregion_id%5D=5&search%5Bdistrict_id%5D=0&search%5Bdist%5D=5&search%5Bfilter_enum_market%5D%5B%5D=secondary&search%5Bfilter_enum_rooms%5D%5B%5D=two&search%5Bfilter_enum_rooms%5D%5B%5D=three&search%5Bfilter_enum_rooms%5D%5B%5D=four&search%5Bcategory_id%5D=14';
+		$content = 'view=&min_id=&q=&search%5Bcity_id%5D=5659&search%5Bregion_id%5D=0&search%5Bdistrict_id%5D=99&search%5Bdist%5D=5&search%5Bfilter_enum_market%5D%5B%5D=secondary&search%5Bfilter_enum_rooms%5D%5B%5D=two&search%5Bfilter_enum_rooms%5D%5B%5D=three&search%5Bcategory_id%5D=14';
 		if($this->page > 0) {
 			$content .= '&page=' . ($this->page+1);
 		}

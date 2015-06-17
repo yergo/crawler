@@ -2,14 +2,24 @@
 
 use Application\Models\Entities\Advertisement as AdvEntity;
 
-class TrojmiastoTask extends \Phalcon\CLI\Task
+class CrawlTask extends \Phalcon\CLI\Task
 {
 
 	private static $processes;
 	private $start;
 	public static $threads = 4;
 
-	public function mainAction()
+	public function olxAction()
+	{
+
+		$this->start = microtime(true);
+
+		$results = new \Application\Models\Services\Olx\ResultsList('http://olx.pl/ajax/gdansk/search/list/');
+		
+		$this->controlCluster($results);
+	}
+	
+	public function trojmiastoAction()
 	{
 
 		$quickie = current($this->dispatcher->getParams()) || false;
@@ -25,12 +35,18 @@ class TrojmiastoTask extends \Phalcon\CLI\Task
 		}
 
 		$results = new \Application\Models\Services\Trojmiasto\ResultsList($filename);
+		
+		$this->controlCluster($results);
+	}
+	
+	public function controlCluster($results) {
+		
 		foreach ($results as $resultList) {
 			print('Downloaded page ' . $resultList->page . ': ');
 
 			$existent = AdvEntity::find([
 						'columns' => 'source_id',
-						'conditions' => 'source_name = "' . $resultList->source_name . '" AND source_id IN(' . join(',', array_keys($resultList->urls)) . ')'
+						'conditions' => 'source_name = "' . $resultList->source_name . '" AND source_id IN("' . join('","', array_keys($resultList->urls)) . '")'
 					])->toArray();
 
 			$ids = [];
@@ -68,6 +84,7 @@ class TrojmiastoTask extends \Phalcon\CLI\Task
 		}
 
 		print(PHP_EOL . 'Done in ' . (microtime(true) - $this->start) . 's' . PHP_EOL);
+
 	}
 
 	public function clusterAction()
@@ -78,7 +95,15 @@ class TrojmiastoTask extends \Phalcon\CLI\Task
 		while (!$done) {
 			try {
 				usleep(mt_rand(1000000, 4000000)); // 1000000 == 1s
-				$advertisement = new \Application\Models\Services\Trojmiasto\Advertisement($params->url);
+				switch($params->source_name) {
+					case 'trojmiasto':
+						$advertisement = new \Application\Models\Services\Trojmiasto\Advertisement($params->url);
+						break;
+					case 'olx':
+						$advertisement = new \Application\Models\Services\Olx\Advertisement($params->url);
+						break;
+				}
+		
 				$ent = $advertisement->getEntity();
 				$done = true;
 			} catch (\Exception $e) {
@@ -104,7 +129,7 @@ class TrojmiastoTask extends \Phalcon\CLI\Task
 			2 => array("file", "error-output.txt", "a") // stderr is a file to write to
 		];
 
-		$process = proc_open('./console trojmiasto cluster', $descriptors, $pipes);
+		$process = proc_open('./console crawl cluster', $descriptors, $pipes);
 
 		if (is_resource($process)) {
 			fwrite($pipes[0], $input);
