@@ -37,6 +37,17 @@ class ResultsList extends ResultsListAbstract
 		
 	}
 	
+		
+	protected function get_page($page = 0) {
+		
+		if($page == 0)
+			return $this->url;
+		else {
+			return $this->url . '&cPage=' . $page;
+		}
+		
+	}
+	
 	protected function get_context() {
 		
 		return stream_context_create([
