@@ -18,10 +18,7 @@ class ResultsList extends ResultsListAbstract
 	{
 		$start = microtime(true);
 		
-		
-//		echo($this->content);die();
-		
-		if (preg_match_all('/<a href="(.*?)#[a-z0-9]+/is', $this->content, $matches)) {
+		if (preg_match_all('/<a href="([a-z0-9\-\.:\/]+)#[a-z0-9]+"/is', $this->content, $matches)) {
 
 			foreach($matches[1] as $url) {
 				preg_match('/CID3\-([A-Z0-9]+)\.htm/si', $url, $estimates);
@@ -44,12 +41,6 @@ class ResultsList extends ResultsListAbstract
 		
 		return $this->url;
 		
-//		if ($page == 0) {
-//			return $this->url;
-//		} else {
-//			return $this->url . '&page=' . ($page+1);
-//		}
-		
 	}
 		
 	protected function get_context() {
@@ -58,7 +49,7 @@ class ResultsList extends ResultsListAbstract
 		if($this->page > 0) {
 			$content .= '&page=' . ($this->page+1);
 		}
-		
+
 		return stream_context_create([
 			'http' => [
 				'method' => 'POST',

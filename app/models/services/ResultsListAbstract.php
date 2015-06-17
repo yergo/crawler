@@ -27,6 +27,7 @@ abstract class ResultsListAbstract implements \Iterator
 	 */
 	public function __construct($url, $content = false, $page = 0)
 	{
+
 		$this->page = $page;
 		$this->url = $url;
 		$this->headers = false;
@@ -103,7 +104,9 @@ abstract class ResultsListAbstract implements \Iterator
 	}
 	
 	public function current() {
-		return $this;
+		$call = get_class($this);
+		$next = new $call($this->url, false, $this->page);
+		return $next;
 	}
 	
 	public function key() {
@@ -111,24 +114,11 @@ abstract class ResultsListAbstract implements \Iterator
 	}
 	
 	public function next() {
-		$call = get_class($this);
-		$next = new $call($this->url, false, $this->page+1);
-		
-//		var_dump($next);die();
-		
-		return $next;
+		++$this->page;
 	}
 
 	public function rewind() {
-		if($this->page != 0) {
-		var_dump(get_class($this));
-		die();
-			$first = new self($this->url, false, false);
-			return $first;
-			
-		} else {
-			return $this;
-		}
+		$this->page = 0;
 	}
 	
 	public function valid() {

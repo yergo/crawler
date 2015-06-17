@@ -24,11 +24,9 @@ class TestController extends ControllerBase
 		
 		$all = [];
 		
-		foreach($list as $value) {
-			$all[] = $value;
-			
-			if(count($all) > 2) break;
-			sleep(1);
+		foreach($list as $el) {
+			$all[] = $el;
+//			if(count($all) > 2) break;
 		}
 		
 		return $all;
