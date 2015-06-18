@@ -11,12 +11,20 @@ class CrawlTask extends \Phalcon\CLI\Task
 
 	public function olxAction()
 	{
-
-		$this->start = microtime(true);
-
-		$results = new \Application\Models\Services\Olx\ResultsList('http://olx.pl/ajax/gdansk/search/list/');
 		
-		$this->controlCluster($results);
+		$links = [
+			'Wrzeszcz' => '99',
+			'Oliwa' => '109',
+			'Przymorze Małe' => '115',
+			'Przymorze Wielkie' => '119',
+			'Żabianka' => '111',
+		];
+
+		foreach($links as $districtId) {
+			$this->start = microtime(true);
+			$results = new \Application\Models\Services\Olx\ResultsList($districtId);
+			$this->controlCluster($results);
+		}
 	}
 	
 	public function trojmiastoAction()
@@ -68,7 +76,8 @@ class CrawlTask extends \Phalcon\CLI\Task
 				$input = [
 					'source_name' => $resultList->source_name,
 					'source_id' => $id,
-					'url' => $url
+					'url' => $url,
+					'district' => property_exists($results, 'district') ? $results->district : null
 				];
 
 				$input = json_encode($input);
@@ -94,7 +103,7 @@ class CrawlTask extends \Phalcon\CLI\Task
 	public function clusterAction()
 	{
 		$params = json_decode(file_get_contents('php://stdin'));
-
+		
 		$done = false;
 		while (!$done) {
 			try {
@@ -105,6 +114,7 @@ class CrawlTask extends \Phalcon\CLI\Task
 						break;
 					case 'olx':
 						$advertisement = new \Application\Models\Services\Olx\Advertisement($params->url);
+						$advertisement->district = array_flip(\Application\Models\Services\Olx\Advertisement::$districts)[$params->district];
 						break;
 				}
 		
@@ -121,6 +131,7 @@ class CrawlTask extends \Phalcon\CLI\Task
 		if(!$ent->getPhone()) {
 			print('*');
 		} else if ($ent->getPhone() && !$ent->save()) {
+			print('x');
 			print('Save failed from from url ' . $params->url . PHP_EOL);
 			var_dump($ent->getMessages());
 		} else {

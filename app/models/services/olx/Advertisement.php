@@ -13,6 +13,14 @@ class Advertisement extends AdvertisementAbstract
 {
 
 	public $sourceName = "olx";
+	
+	public static $districts = [
+		'Wrzeszcz' => '99',
+		'Oliwa' => '109',
+		'Przymorze Małe' => '115',
+		'Przymorze Wielkie' => '119',
+		'Żabianka' => '111',
+	];
 
 	protected function parse()
 	{
@@ -47,14 +55,14 @@ class Advertisement extends AdvertisementAbstract
 //			$this->address = $estimates[1];
 //		}
 		
-		if (preg_match('/<span class="show\-map\-link.*?<strong class=".*?">(.*?)<\/strong/si', $this->content, $estimates) == 1) {
-			$estimates = explode(',',$estimates[1]);
-			if( count($estimates) == 3) {
-				$this->district = trim(end($estimates));
-			} else {
-				$this->district = 'Wrzeszcz +5km';
-			}
-		}
+//		if (preg_match('/<span class="show\-map\-link.*?<strong class=".*?">(.*?)<\/strong/si', $this->content, $estimates) == 1) {
+//			$estimates = explode(',',$estimates[1]);
+//			if( count($estimates) == 3) {
+//				$this->district = trim(end($estimates));
+//			} else {
+//				$this->district = 'Wrzeszcz +5km';
+//			}
+//		}
 		
 		if (preg_match('/Liczba pokoi.*? title="([1-4]+) /si', $this->content, $estimates) == 1) {
 			$this->rooms = intval($estimates[1]);

@@ -13,6 +13,13 @@ class ResultsList extends ResultsListAbstract
 {
 
 	public $source_name = "olx";
+	public $district=99;
+	
+	public function __construct($url, $content = false, $page = 0)
+	{
+		$this->district = $url;
+		parent::__construct('http://olx.pl/ajax/gdansk/search/list/', $content, $page);
+	}
 	
 	protected function parse()
 	{
@@ -32,7 +39,6 @@ class ResultsList extends ResultsListAbstract
 			$this->timeParsing = microtime(true)-$start;
 			return true;
 		}
-		
 		return false;
 		
 	}
@@ -45,8 +51,7 @@ class ResultsList extends ResultsListAbstract
 		
 	protected function get_context() {
 		
-//		$content = 'view=&min_id=&q=&search%5Bcity_id%5D=5659&search%5Bregion_id%5D=5&search%5Bdistrict_id%5D=0&search%5Bdist%5D=5&search%5Bfilter_enum_market%5D%5B%5D=secondary&search%5Bfilter_enum_rooms%5D%5B%5D=two&search%5Bfilter_enum_rooms%5D%5B%5D=three&search%5Bfilter_enum_rooms%5D%5B%5D=four&search%5Bcategory_id%5D=14';
-		$content = 'view=&min_id=&q=&search%5Bcity_id%5D=5659&search%5Bregion_id%5D=0&search%5Bdistrict_id%5D=99&search%5Bdist%5D=5&search%5Bfilter_enum_market%5D%5B%5D=secondary&search%5Bfilter_enum_rooms%5D%5B%5D=two&search%5Bfilter_enum_rooms%5D%5B%5D=three&search%5Bcategory_id%5D=14';
+		$content = 'view=&min_id=&q=&search%5Bcity_id%5D=5659&search%5Bregion_id%5D=0&search%5Bdistrict_id%5D=' . intval($this->district) . '&search%5Bdist%5D=0&search%5Bfilter_enum_market%5D%5B%5D=secondary&search%5Bfilter_enum_rooms%5D%5B%5D=three&search%5Bfilter_enum_rooms%5D%5B%5D=two&search%5Bcategory_id%5D=14';
 		if($this->page > 0) {
 			$content .= '&page=' . ($this->page+1);
 		}
