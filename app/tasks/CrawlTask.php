@@ -16,6 +16,7 @@ class CrawlTask extends \Phalcon\CLI\Task
 			$this->start = microtime(true);
 			$results = new \Application\Models\Services\Olx\ResultsList($districtId);
 			$this->controlCluster($results);
+			sleep(1);
 		}
 	}
 	
