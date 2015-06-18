@@ -64,7 +64,7 @@ class AdvertisementsController extends ControllerBase
 
 			$builder->orderBy('A.updated ASC');
 
-			$advertisements = $builder->getQuery()->execute();
+			$advertisements = ($options['with-olx'] || $options['with-trojmiasto']) ? $builder->getQuery()->execute() : [];
 			
 			$result = [];
 
