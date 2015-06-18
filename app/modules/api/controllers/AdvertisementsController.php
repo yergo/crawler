@@ -76,17 +76,33 @@ class AdvertisementsController extends ControllerBase
 	
 	public function ignoredAction() {
 		
-		$advBase = TAdvertisement::findFirst($this->_request['data']['id']);
+		$times = [];
+		
+		$times['start'] = microtime(true);
+		
+		$advBase = TAdvertisement::findFirst('id = '. $this->_request['data']['id']);
 		$date = date('Y-m-d', strtotime(sprintf('+%d weeks', $this->_request['data']['weeks'])));
+		
+		$times['fetch'] = microtime(true) - $times['start'];
+		
+		if(!$advBase) {
+			return [
+				'id' => $this->_request['data']['id'],
+				'till' => $date
+			];
+		}
+		$times['check'] = microtime(true) - $times['start'];
 		
 		$ign = new TIgnored();
 		$ign->setAdvertisementId($advBase->getId());
 		$ign->setTimeout($date);
 		
-		if($ign->save()) {
+		if($ign->create()) {
+			$times['save'] = microtime(true) - $times['start'];
 			return [
 				'id' => $this->_request['data']['id'],
-				'till' => $ign->getTimeout()
+				'till' => $ign->getTimeout(),
+				'times' => $times
 			];
 		} else {
 			throw new \Exception($ign->getMessages()->getMessage());

@@ -41,6 +41,8 @@ class CrawlTask extends \Phalcon\CLI\Task
 	
 	public function controlCluster($results) {
 		
+		print(date('Y-m-d H:i:s') . ': job started..' . PHP_EOL);
+
 		foreach ($results as $resultList) {
 			print('Downloaded page ' . $resultList->page . ': ');
 
@@ -53,6 +55,8 @@ class CrawlTask extends \Phalcon\CLI\Task
 			foreach ($existent as $values) {
 				$ids[] = $values['source_id'];
 			}
+			
+			print(' (-' . count($ids) . ') ');
 
 			$processes = [];
 			foreach ($resultList->urls as $id => $url) {
@@ -113,10 +117,14 @@ class CrawlTask extends \Phalcon\CLI\Task
 				sleep(5);
 			}
 		}
-
-		if ($ent->getPhone() && !$ent->save()) {
+		
+		if(!$ent->getPhone()) {
+			print('*');
+		} else if ($ent->getPhone() && !$ent->save()) {
 			print('Save failed from from url ' . $params->url . PHP_EOL);
 			var_dump($ent->getMessages());
+		} else {
+			print('+');
 		}
 
 		exit(0);
@@ -148,10 +156,10 @@ class CrawlTask extends \Phalcon\CLI\Task
 			foreach ($processes as $k => $process) {
 				$status = proc_get_status($process);
 				if (!$status['running']) {
-					proc_close($process);
+					$signal = proc_close($process);
 					$killed++;
 					$unset[] = $k;
-					print('.');
+//					print($signal);
 				}
 			}
 
