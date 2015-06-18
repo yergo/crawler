@@ -3,6 +3,8 @@
 use Phalcon\Mvc\Model\MetaData\Apc as MetaDataApcAdapter;
 use Phalcon\Mvc\Model\MetaData\XCache as MetaDataXCacheAdapter;
 use Phalcon\Mvc\Model\MetaData\Memory as MetaDataMemoryAdapter;
+use Phalcon\Mvc\Model\MetaData\Session as MetaDataSessionAdapter;
+use Phalcon\Mvc\Model\MetaData\Files as MetaDataFilesAdapter;
 
 // Set the database service WEB
 $di->set('db', function () use ($config) {
@@ -48,7 +50,7 @@ $di->set('modelsMetadata', function() use ($config)
 		case 'apc':
 			$metaData = new MetaDataApcAdapter([
 				'lifetime' => $config->models->metadata->lifetime,
-				'suffix' => $config->models->metadata->suffix,
+				'prefix' => $config->models->metadata->suffix,
 			]);
 			break;
 		case 'xcache':
@@ -59,6 +61,14 @@ $di->set('modelsMetadata', function() use ($config)
 			break;
 		case 'memory':
 			$metaData = new MetaDataMemoryAdapter();
+			break;
+		case 'session':
+			$metaData = new MetaDataSessionAdapter();
+			break;
+		case 'files':
+			$metaData = new MetaDataFilesAdapter([
+				'metaDataDir' => APPLICATION_PATH . $config->application->cacheDir
+			]);
 			break;
 		default:
 			throw new \Exception('Unimplemented models::metadata.adapter in config.ini');
