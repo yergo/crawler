@@ -57,6 +57,7 @@ class AdvertisementsController extends ControllerBase
 		}
 		
 		if($advBase->delete()) {
+			$this->clearCache();
 			return ['id' => $this->_request['data']['id']];
 		} else {
 			throw new \Exception($advBase->getMessages()->getMessage());
@@ -68,6 +69,7 @@ class AdvertisementsController extends ControllerBase
 		$advBase->setSkipped(1);
 		
 		if($advBase->update()) {
+			$this->clearCache();
 			return ['id' => $this->_request['data']['id']];
 		} else {
 			throw new \Exception($advBase->getMessages()->getMessage());
@@ -78,12 +80,8 @@ class AdvertisementsController extends ControllerBase
 		
 		$times = [];
 		
-		$times['start'] = microtime(true);
-		
 		$advBase = TAdvertisement::findFirst('id = '. $this->_request['data']['id']);
 		$date = date('Y-m-d', strtotime(sprintf('+%d weeks', $this->_request['data']['weeks'])));
-		
-		$times['fetch'] = microtime(true) - $times['start'];
 		
 		if(!$advBase) {
 			return [
@@ -91,24 +89,41 @@ class AdvertisementsController extends ControllerBase
 				'till' => $date
 			];
 		}
-		$times['check'] = microtime(true) - $times['start'];
 		
 		$ign = new TIgnored();
 		$ign->setAdvertisementId($advBase->getId());
 		$ign->setTimeout($date);
 		
+		/*
+		 * @todo: This create happens long ! Cashes dont help.
+		 */
 		if($ign->create()) {
-			$times['save'] = microtime(true) - $times['start'];
+			$this->clearCache();
 			return [
 				'id' => $this->_request['data']['id'],
-				'till' => $ign->getTimeout(),
-				'times' => $times
+				'till' => $date
 			];
+			
 		} else {
 			throw new \Exception($ign->getMessages()->getMessage());
 		}
 		
 		return $this->_request;
+	}
+	
+	protected function clearCache() {
+		
+
+//		$key = TAdvertisement::CACHE_KEY;
+//		$cache = $this->di->getCache();
+//		if($cache->exists($key)) {
+//			$cache->delete($key);
+//		} else {
+//			apc_clear_cache();
+//			error_log('apc_clear_cache in ' . __FILE__ . ' ');
+//		}
+		
+		
 	}
 	
 }

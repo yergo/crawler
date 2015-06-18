@@ -22,7 +22,8 @@ $di->set('db', function () use ($config) {
                 'charset' => $dbconf->charset,
                 'options' => array(
                     PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES "' . $dbconf->charset . '"',
-                    PDO::ATTR_CASE => PDO::CASE_LOWER
+                    PDO::ATTR_CASE => PDO::CASE_LOWER,
+					PDO::ATTR_PERSISTENT => true, // @todo test persistent
                 )
             ));
 

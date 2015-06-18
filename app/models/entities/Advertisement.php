@@ -7,6 +7,8 @@ use Phalcon\Mvc\Model\Validator\Email as Email;
 class Advertisement extends \Phalcon\Mvc\Model
 {
 
+	const CACHE_KEY = 'advertisements-data';
+	
     /**
      *
      * @var integer

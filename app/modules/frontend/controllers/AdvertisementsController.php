@@ -18,6 +18,9 @@ class AdvertisementsController extends ControllerBase
 	 */
 	public function indexAction()
 	{
+		
+//		$cache = $this->di->getCache();
+//		$key = TAdvertisement::CACHE_KEY;
 
 		$options = [
 			'with-ignored' => false,
@@ -31,34 +34,47 @@ class AdvertisementsController extends ControllerBase
 			}
 		}
 		
-		$builder = $this->modelsManager->createBuilder()
-			->addFrom('\Application\Models\Entities\Advertisement', 'A')
-			->where('A.middleman = 0');
+//		$hash = base64_encode(json_encode($options));
+//		$fetch = $cache->get($key) ?: [];
+//		
+//		if($fetch && array_key_exists($hash, $fetch)) {
+//
+//			$result = $fetch[$hash];
+//			
+//		} else {
 		
-		if(!$options['with-ignored']) {
-			$builder->leftJoin('\Application\Models\Entities\AdvertisementIgnore', 'A.id = I.advertisement_id', 'I')
-			->andWhere('A.skipped = 0')
-			->andWhere('I.id IS NULL OR I.timeout < NOW()');
-		}
-		
-		$sources = [];
-		if($options['with-olx']) {
-			$sources[] = 'olx';
-		}
-		if($options['with-trojmiasto']) {
-			$sources[] = 'trojmiasto';
-		}
-		$builder->andWhere('A.source_name IN("' . join('","', $sources) . '")');
-		
-		$builder->orderBy('A.updated ASC');
-		
-		$advertisements = $builder->getQuery()->execute();
-		
-		$result = [];
-		
-		foreach($advertisements as $advertisement) {
-			$result[$advertisement->getPhone()][] = $advertisement->toArray();
-		}
+			$builder = $this->modelsManager->createBuilder()
+				->addFrom('\Application\Models\Entities\Advertisement', 'A')
+				->where('A.middleman = 0');
+
+			if(!$options['with-ignored']) {
+				$builder->leftJoin('\Application\Models\Entities\AdvertisementIgnore', 'A.id = I.advertisement_id', 'I')
+				->andWhere('A.skipped = 0')
+				->andWhere('I.id IS NULL OR I.timeout < NOW()');
+			}
+
+			$sources = [];
+			if($options['with-olx']) {
+				$sources[] = 'olx';
+			}
+			if($options['with-trojmiasto']) {
+				$sources[] = 'trojmiasto';
+			}
+			$builder->andWhere('A.source_name IN("' . join('","', $sources) . '")');
+
+			$builder->orderBy('A.updated ASC');
+
+			$advertisements = $builder->getQuery()->execute();
+			
+			$result = [];
+
+			foreach($advertisements as $advertisement) {
+				$result[$advertisement->getPhone()][] = $advertisement->toArray();
+			}
+			
+//			$fetch[$hash] = $result;
+//			$cache->save($key, $fetch, 60*60);
+//		}
 		
 		$this->view->advertisements = $result;
 		$this->view->options = $options;

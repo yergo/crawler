@@ -16,6 +16,15 @@ namespace Application\Api\Controllers;
 class TestController extends ControllerBase
 {
 	
+	public function indexAction() {
+		
+		return apc_clear_cache();
+		
+//		phpinfo();
+		die();
+		
+	}
+	
 	public function olxAction() {
 		
 		$file = 'http://olx.pl/ajax/gdansk/search/list/';

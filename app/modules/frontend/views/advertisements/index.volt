@@ -94,6 +94,13 @@
                                 <button onclick="ignored('{{ item['id'] }}', '4');" type="button" class="btn btn-xs btn-warning">Ignoruj przez miesiąc</button>
                                 <button onclick="deleted('{{ item['id'] }}');" type="button" class="btn btn-xs btn-danger">Usuń z bazy</button>
                             </p>
+                            
+                            <ul class="list-group hidden" id="loader_{{ item['id'] }}">
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+                                </div>
+                            </ul>
+                            
                         </div>
 
                         <ul class="list-group hidden" id="additionals_{{ item['id'] }}">
@@ -149,7 +156,10 @@
     }
     
     function skipped(id) {
-    
+
+        elem = $('ul#loader_' + id.toString());
+        elem.toggleClass('hidden');
+
         $.ajax({
             type: "POST",
             url: "{{ url('api/advertisements/skipped') }}",
@@ -166,6 +176,9 @@
     
     function ignored(id, weeks) {
     
+        elem = $('ul#loader_' + id.toString());
+        elem.toggleClass('hidden');
+
         $.ajax({
             type: "POST",
             url: "{{ url('api/advertisements/ignored') }}",
@@ -182,7 +195,10 @@
     }
     
     function deleted(id) {
-    
+
+        elem = $('ul#loader_' + id.toString());
+        elem.toggleClass('hidden');
+
         $.ajax({
             type: "POST",
             url: "{{ url('api/advertisements/deleted') }}",
