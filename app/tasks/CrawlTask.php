@@ -12,15 +12,7 @@ class CrawlTask extends \Phalcon\CLI\Task
 	public function olxAction()
 	{
 		
-		$links = [
-			'Wrzeszcz' => '99',
-			'Oliwa' => '109',
-			'Przymorze Małe' => '115',
-			'Przymorze Wielkie' => '119',
-			'Żabianka' => '111',
-		];
-
-		foreach($links as $districtId) {
+		foreach(\Application\Models\Services\Olx\Advertisement::$districts as $districtId) {
 			$this->start = microtime(true);
 			$results = new \Application\Models\Services\Olx\ResultsList($districtId);
 			$this->controlCluster($results);
