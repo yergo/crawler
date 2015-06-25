@@ -40,9 +40,9 @@ class ResultsList extends ResultsListAbstract
 		
 	protected function get_page($page = 0) {
 		
-		if($page == 0)
+		if($page == 0) {
 			return $this->url;
-		else {
+		} else {
 			return $this->url . '&cPage=' . $page;
 		}
 		
