@@ -62,7 +62,7 @@ class AdvertisementsController extends ControllerBase
 			}
 			$builder->andWhere('A.source_name IN("' . join('","', $sources) . '")');
 
-			$builder->orderBy('A.updated ASC');
+			$builder->orderBy('A.updated DESC');
 
 			$advertisements = ($options['with-olx'] || $options['with-trojmiasto']) ? $builder->getQuery()->execute() : [];
 			
