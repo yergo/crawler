@@ -43,7 +43,7 @@ class AdvertisementsController extends ControllerBase
 		}
 		
 		$advs = TAdvertisement::find([
-			'conditions' => 'source_id != :ignored_id: AND area BETWEEN :area: AND (:area:+1.0) AND district LIKE :district: AND price_per_area BETWEEN :lower_price: AND :upper_price: AND rooms = :rooms: AND address LIKE :addr:',
+			'conditions' => 'source_id != :ignored_id: AND area BETWEEN :area: AND (:area:+1.0) AND district LIKE :district: AND price_per_area BETWEEN :lower_price: AND :upper_price: AND rooms = :rooms: AND address LIKE :addr: AND skipped = 0',
 			'bind' => [
 				'ignored_id' => $advBase->getSourceId(),
 				'area' => floor($advBase->getArea()),
