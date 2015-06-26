@@ -22,24 +22,38 @@ class AdvertisementsController extends ControllerBase
 		
 		$addr = $advBase->getAddress();
 		$addrs = explode(' ', $addr);
-		foreach($addrs as $addrr) {
+		foreach($addrs as $k => $addrr) {
 			if(strlen($addrr) > 3) {
-				$addr = $addrr;
+				if(isset($addrs[$k+1]) && strlen($addrs[$k+1]) > 5) {
+					// nazwisko
+					$addr = '%'.$addrs[$k+1] . '%';
+				} else {
+				$addr = '%' . $addrr . '%';
+				}
+				break;
+			}
+		}
+		
+		$district = $advBase->getDistrict();
+		foreach(explode(' ', $district) as $distr) {
+			if(strlen($distr) > 3) {
+				$district = $distr . '%';
 				break;
 			}
 		}
 		
 		$advs = TAdvertisement::find([
-			'conditions' => 'source_id != :ignored_id: AND area = :area: AND district = :district: AND price_per_area BETWEEN :lower_price: AND :upper_price: AND rooms = :rooms: AND skipped = 0',
+			'conditions' => 'source_id != :ignored_id: AND area BETWEEN :area: AND (:area:+1.0) AND district LIKE :district: AND price_per_area BETWEEN :lower_price: AND :upper_price: AND rooms = :rooms: AND address LIKE :addr:',
 			'bind' => [
 				'ignored_id' => $advBase->getSourceId(),
-				'area' => $advBase->getArea(),
-				'district' => $advBase->getDistrict(),
+				'area' => floor($advBase->getArea()),
+				'district' => $district,
 				'lower_price' => $priceBase - $percentBase,
 				'upper_price' => $priceBase + $percentBase,
 				'rooms' => $advBase->getRooms(),
+				'addr' => $addr
 			],
-			'order' => 'IF(address LIKE "' . $addr . '%", 1, 0) DESC, price_per_meter DESC'
+//			'order' => 'IF(address LIKE "%' . $addr . '%", 1, 0) DESC, price_per_meter DESC'
 
 		]);
 		
