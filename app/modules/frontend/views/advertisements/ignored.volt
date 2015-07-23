@@ -1,55 +1,10 @@
       
 <div class="container">
 	
-    <h1 class="page-header">Ogłoszenia nie obsłużone ({{ advertisements|length }} offers)</h1>
+    <h1 class="page-header">Odsuniętych w czasie lista ogłoszeń ({{ advertisements|length }} offers)</h1>
     <p class="lead">
         Od nie-pośredników, pogrupowane po numerach telefonicznych, od najstarszej daty aktualizacji rosnąco.
     </p>
-
-    <div class="row">
-        
-        <form action="{{ url('advertisements') }}" method="GET" class="form-inline col-md-12">
-{#            
-            <div class="form-group">
-                
-                <label for="district">Dzielnica</label>
-                <select class="form-control" name="district" id="district">
-                    <option value="*">Wszystkie</option>
-                </select>
-                
-            </div>
-            
-            <div class="form-group">
-                
-                <label for="phone">Telefon</label>
-                <input type="text" class="form-control" name="phone" id="district" />
-                
-            </div>
-#}
-{#
-            <div class="checkbox">
-                <label>
-                    <input type="checkbox" name="with-ignored"> Wraz z ignorowanymi
-                </label>
-            </div>
-#}
-
-            <div class="checkbox">
-                <label>
-                    <input type="checkbox" name="with-olx" {% if options['with-olx'] %} checked="checked"{% endif %}> Z Olx
-                </label>
-            </div>
-            <div class="checkbox">
-                <label>
-                    <input type="checkbox" name="with-trojmiasto" {% if options['with-trojmiasto'] %} checked="checked"{% endif %}> Z Trojmiasto
-                </label>
-            </div>
-            <button type="submit" class="btn btn-xs btn-default">Submit</button>
-        </form>
-        
-        
-    </div>
-    <br/>
 
     <div class="row">
         
@@ -88,10 +43,10 @@
                             </p>
 
                             <p>
-                                <button onclick="similar('{{ item['id'] }}');" type="button" class="btn btn-xs btn-primary">Pokaż podobne</button>
-                                <button onclick="skipped('{{ item['id'] }}');" type="button" class="btn btn-xs btn-info">Oznacz jako pozyskany</button>
-                                <button onclick="ignored('{{ item['id'] }}', '1');" type="button" class="btn btn-xs btn-warning">Ignoruj przez tydzień</button>
-                                <button onclick="ignored('{{ item['id'] }}', '4');" type="button" class="btn btn-xs btn-warning">Ignoruj przez miesiąc</button>
+{#                                <button onclick="similar('{{ item['id'] }}');" type="button" class="btn btn-xs btn-primary">Pokaż podobne</button>#}
+{#                                <button onclick="skipped('{{ item['id'] }}');" type="button" class="btn btn-xs btn-info">Oznacz jako pozyskany</button>#}
+{#                                <button onclick="ignored('{{ item['id'] }}', '1');" type="button" class="btn btn-xs btn-warning">Ignoruj przez tydzień</button>#}
+{#                                <button onclick="ignored('{{ item['id'] }}', '4');" type="button" class="btn btn-xs btn-warning">Ignoruj przez miesiąc</button>#}
                                 <button onclick="deleted('{{ item['id'] }}');" type="button" class="btn btn-xs btn-danger">Usuń z bazy</button>
                             </p>
                             
