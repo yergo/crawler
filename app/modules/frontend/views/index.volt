@@ -19,13 +19,13 @@
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
             <li><a href="{{ url() }}">Home</a></li>
-            <li class="dropdown">
+            <li class="dropdown {% if router.getControllerName() == 'advertisements' %}active{% endif %}">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Ogłoszenia <span class="caret"></span></a>
                 <ul class="dropdown-menu">
-                    <li><a href="{{ url('advertisements') }}">Aktualna lista</a></li>
-                    <li><a href="{{ url('advertisements/ignored') }}">Odsunięte w czasie</a></li>
+                    <li><a href="{{ url('advertisements') }}" class="{% if router.getActionName() == 'index' %}active{% endif %}">Aktualna lista</a></li>
+                    <li><a href="{{ url('advertisements/ignored') }}" class="{% if router.getActionName() == 'ignored' %}active{% endif %}">Odsunięte w czasie</a></li>
                     <li role="separator" class="divider"></li>
-                    <li><a href="{{ url('advertisements/skipped') }}">Pozyskane / Buraki</a></li>
+                    <li><a href="{{ url('advertisements/skipped') }}" class="{% if router.getActionName() == 'skipped' %}active{% endif %}">Pozyskane / Buraki</a></li>
                 </ul>
             </li>
             <li><a href="{{ url('api') }}">API</a></li>

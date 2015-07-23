@@ -92,7 +92,7 @@
                                 <button onclick="skipped('{{ item['id'] }}');" type="button" class="btn btn-xs btn-info">Oznacz jako pozyskany</button>
                                 <button onclick="ignored('{{ item['id'] }}', '1');" type="button" class="btn btn-xs btn-warning">Ignoruj przez tydzień</button>
                                 <button onclick="ignored('{{ item['id'] }}', '4');" type="button" class="btn btn-xs btn-warning">Ignoruj przez miesiąc</button>
-                                <button onclick="deleted('{{ item['id'] }}');" type="button" class="btn btn-xs btn-danger">Usuń z bazy</button>
+                                <button onclick="deleted('{{ item['id'] }}');" type="button" class="btn btn-xs btn-danger">Nieaktualne (usuń z bazy)</button>
                             </p>
                             
                             <ul class="list-group hidden" id="loader_{{ item['id'] }}">
