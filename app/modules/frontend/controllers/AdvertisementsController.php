@@ -70,8 +70,9 @@ class AdvertisementsController extends ControllerBase
 		$builder = $this->modelsManager->createBuilder()
 			->addFrom('\Application\Models\Entities\Advertisement', 'A')
 			->where('A.middleman = 0')
+			->andWhere('A.skipped = 0')
 			->leftJoin('\Application\Models\Entities\AdvertisementIgnore', 'A.id = I.advertisement_id', 'I')
-			->andWhere('I.id IS NULL OR I.timeout < NOW()');
+			->andWhere('I.timeout > NOW()');
 
 		$advertisements = $builder->getQuery()->execute();
 
