@@ -90,8 +90,25 @@ class Advertisement extends AdvertisementAbstract
 			$this->middleman = false;
 		}
 
+		if (preg_match('/tel\.\: \<span\>([\+0-9\-]+)<\/span\>/si', $this->content, $estimates) == 1) {
+			$contact = trim($estimates[1]);
+			$phoneUtil = \libphonenumber\PhoneNumberUtil::getInstance();
 
-		$this->contacts($content);
+			try {
+				$phoneProto = $phoneUtil->parse($contact, 'PL');
+				$this->phone = $phoneUtil->format($phoneProto, \libphonenumber\PhoneNumberFormat::INTERNATIONAL);
+			} catch(\Exception $e) {
+				$this->phone = null;
+			}
+		}
+		
+		if (preg_match('/<a href="mailto:(.*?)>(.*?)<\/a>/si', $this->content, $estimates) == 1) {
+			$this->email = $estimates[2];
+		}
+		
+		if (is_null($this->phone) || !$this->phone) {
+			$this->contacts($content);
+		}
 
 //		$this->timeParsing = microtime(true) - $start;
 	}
